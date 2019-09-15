@@ -137,11 +137,71 @@ public:
 		}
 		return curr;
 	}
+
+	//node* my1;
+};
+
+class Dice
+{
+private:
+	int N; //максимальное значение на костях
+	int quantity; //кол-во костей
+	double prob; //вероятность для грани
+	int sum; //возможные суммы
+	double prob_sum; //вероятность суммы
+public:
+	void AllSum(int N1, int N2)
+	{
+		int maxSum = N1 + N2;
+	}
+
+	double*arr_sum;
+	void Arrays(int N1, int N2, double*arr_sum)
+	{
+		double summa = 0;
+		double*arr1 = new double[N1];
+		double*arr2 = new double[N2];
+		arr_sum = new double[N1 * N2];
+		for (int i = 0; i < N1-1; i++)
+		{
+			cout << "Enter probability of " << i+1 << " ";
+			cin >> arr1[i];
+			cout << endl;
+			summa+= arr1[i];
+		}
+		arr1[N1 - 1] = 1 - summa;
+		cout << "Probability of " << N1 << " = " << arr1[N1 - 1]<<endl;
+		summa = 0;
+		for (int j = 0; j < N2-1; j++)
+		{
+			cout << "Enter probability of " << j+1 << " ";
+			cin >> arr2[j];
+			cout << endl;
+			summa += arr2[j];
+		}
+		arr2[N2 - 1] = 1 - summa;
+		cout << "Probability of " << N2 << " = " << arr2[N2 - 1] << endl;
+		int k = N1 * N2;
+		for (int i = 0; i < N1; i++)
+		{
+			for (int j = 0; j < N2; j++)
+			{
+				arr_sum[k] = arr1[i] * arr2[j];
+				cout << "Probability of summ " << i + 1 << "*" << j + 1 << " = " << arr_sum[k] << endl;
+			}
+			
+		}
+	}
+
+	double AllProbSum()
+	{
+		
+	}
 };
 
 int main()
 {
-	MyTree<int> my;
+	/*MyTree<int> my;
 	int n, data, v;
 	cout << "Enter number of nodes: ";
 	cin >> n;
@@ -154,12 +214,12 @@ int main()
 		my.Input(my.GetTree(), data);
 	}
 	my.Output(my.GetTree());
-	cout << endl;
+	cout << endl;*/
 	//count = my.Search(my.GetTree(), v, c = 1);
 	//if (count < 0) cout << "Tree don't have v!" << endl;
 	//else cout << count << endl;
-	my.DeleteNode(my.GetTree(), v);
-	my.Output(my.GetTree());
+	//my.DeleteNode(my.GetTree(), v);
+	//my.Output(my.GetTree());
 	system("pause");
 }
 
