@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-template <typename type>
+template <typename type, typename type1>
 class MyTree
 {
 private:
@@ -17,7 +17,8 @@ private:
 			this->right = nullptr;
 			this->left = nullptr;
 		}
-		type info;
+		type index;
+		type1 info;
 		node*right;
 		node*left;
 	};
@@ -36,14 +37,16 @@ public:
 	MyTree(const MyTree &copy)
 	{
 		this->tree = copy.tree;
-		this->info = copy.info;
+//		this->info = copy.info;
+		//this->index = copy.index;
 	}
 
-	void Input(node*curr, type a)
+	void Input(node*curr,type i, type1 a)
 	{
 		if (tree == nullptr)
 		{
 			tree = new node();
+			tree->index = i;
 			tree->info = a;
 			tree->left = tree->right = nullptr;
 		}
@@ -51,23 +54,26 @@ public:
 		if (curr == nullptr)
 		{
 			curr = new node();
+			curr->index = i;
 			curr->info = a;
 			curr->left = curr->right = nullptr;
 		}
 		if (a < curr->info)
-			if (curr->left != nullptr) Input(curr->left, a);
+			if (curr->left != nullptr) Input(curr->left, i, a);
 			else
 			{
 				curr->left = new node();
 				curr->left->left = curr->left->right = nullptr;
+				curr->left->index = i;
 				curr->left->info = a;
 			}
 		if (a > curr->info)
-			if (curr->right != nullptr) Input(curr->right, a);
+			if (curr->right != nullptr) Input(curr->right, i, a);
 			else
 			{
 				curr->right = new node();
 				curr->right->left = curr->right->right = nullptr;
+				curr->right->index = i;
 				curr->right->info = a;
 			}
 	}
@@ -77,15 +83,15 @@ public:
 		if (curr != nullptr)
 		{
 			Output(curr->left);
-			cout << curr->info << " ";
+			cout << curr->index<<" : ";
+			cout << curr->info <<endl;
 			Output(curr->right);
 		}
 	}
 
 	int Search(node*curr, type v, int counter = 1) //поиск значения
 	{
-		if
- (curr == nullptr) return -1;
+		if (curr == nullptr) return -1;
 		if (curr->info == v) return counter;
 
 		if (v <= curr->info)
@@ -156,7 +162,7 @@ public:
 	}
 
 	double*arr_sum;
-	void Arrays(int N1, int N2, double*arr_sum)
+	void Arrays(int N1, int N2)
 	{
 		double summa = 0;
 		double*arr1 = new double[N1];
@@ -164,9 +170,9 @@ public:
 		arr_sum = new double[N1 * N2];
 		for (int i = 0; i < N1-1; i++)
 		{
-			cout << "Enter probability of " << i+1 << " ";
+			cout << "Enter probability of " << i+1 << ": ";
 			cin >> arr1[i];
-			cout << endl;
+			//cout << endl;
 			summa+= arr1[i];
 		}
 		arr1[N1 - 1] = 1 - summa;
@@ -174,33 +180,52 @@ public:
 		summa = 0;
 		for (int j = 0; j < N2-1; j++)
 		{
-			cout << "Enter probability of " << j+1 << " ";
+			cout << "Enter probability of " << j+1 << ": ";
 			cin >> arr2[j];
-			cout << endl;
+			//cout << endl;
 			summa += arr2[j];
 		}
 		arr2[N2 - 1] = 1 - summa;
 		cout << "Probability of " << N2 << " = " << arr2[N2 - 1] << endl;
-		int k = N1 * N2;
+		int k = 0;
 		for (int i = 0; i < N1; i++)
 		{
 			for (int j = 0; j < N2; j++)
 			{
 				arr_sum[k] = arr1[i] * arr2[j];
 				cout << "Probability of summ " << i + 1 << "*" << j + 1 << " = " << arr_sum[k] << endl;
+				k++;
 			}
 			
 		}
 	}
 
-	double AllProbSum()
+	void SumToTree(MyTree<int, double>* my, Dice cybic, int N1, int N2)
 	{
-		
+		//MyTree<int, double> my;
+		for (int k = 0; k < N1*N2; k++)
+		{
+			my->Input(my->GetTree(), k, cybic.arr_sum[k]);
+		}
 	}
+
 };
+
 
 int main()
 {
+	MyTree<int, double> my;
+	Dice cybic;
+	int N1, N2;
+	cout << "Enter N1: ";
+	cin >> N1;
+	cout << endl;
+	cout << "Enter N2: ";
+	cin >> N2;
+	cout << endl;
+	cybic.Arrays(N1, N2);
+	cybic.SumToTree(&my, cybic, N1, N2);
+	my.Output(my.GetTree());
 	/*MyTree<int> my;
 	int n, data, v;
 	cout << "Enter number of nodes: ";
