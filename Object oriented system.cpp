@@ -83,18 +83,28 @@ public:
 		if (curr != nullptr)
 		{
 			Output(curr->left);
-			cout << curr->index<<" : ";
-			cout << curr->info <<endl;
+			cout <<"("<< curr->index+1<<" : "<< curr->info<<")"<<endl;
 			Output(curr->right);
+		}
+	}
+
+	void PrintTree(node*curr, int level)
+	{
+		if (curr)
+		{
+			PrintTree(curr->right, level + 1);
+			for (int i = 0; i < level; i++) cout << "         ";
+			cout << "(" << curr->index + 2 << ":" << curr->info << ")" << endl;
+			PrintTree(curr->left, level + 1);
 		}
 	}
 
 	int Search(node*curr, type v, int counter = 1) //поиск значения
 	{
 		if (curr == nullptr) return -1;
-		if (curr->info == v) return counter;
+		if (curr->index == v) return counter;
 
-		if (v <= curr->info)
+		if (v <= curr->index)
 		{
 			if (curr->left != nullptr)
 				return Search(curr->left, v, ++counter);
@@ -102,7 +112,7 @@ public:
 		}
 		else
 		{
-			if (v > curr->info)
+			if (v > curr->index)
 			{
 				if (curr->right != NULL)
 					return Search(curr->right, v, ++counter);
@@ -118,7 +128,7 @@ public:
 		return c;
 	}
 
-	node*DeleteNode(node*curr, type v)
+	node*DeleteNode(node*curr, type1 v)
 	{
 		if (curr == nullptr) return curr;
 		if (v < curr->info) curr->left = DeleteNode(curr->left, v);
@@ -156,10 +166,26 @@ private:
 	int sum; //возможные суммы
 	double prob_sum; //вероятность суммы
 public:
-	void AllSum(int N1, int N2)
+	Dice()
+	{
+		Dice*cybic;
+	}
+
+	int AllSum(int N1, int N2)
 	{
 		int maxSum = N1 + N2;
+		return maxSum;
 	}
+
+	/*bool ErrorIndex(int k, int u)
+	{
+		bool tmp=false;
+		for (u = 0; u < k; u++)
+		{
+			if (u = k) tmp = true;
+		}
+		return tmp;
+	}*/
 
 	double*arr_sum;
 	void Arrays(int N1, int N2)
@@ -167,7 +193,7 @@ public:
 		double summa = 0;
 		double*arr1 = new double[N1];
 		double*arr2 = new double[N2];
-		arr_sum = new double[N1 * N2];
+		arr_sum = new double[N1+N2-1];
 		for (int i = 0; i < N1-1; i++)
 		{
 			cout << "Enter probability of " << i+1 << ": ";
@@ -187,63 +213,144 @@ public:
 		}
 		arr2[N2 - 1] = 1 - summa;
 		cout << "Probability of " << N2 << " = " << arr2[N2 - 1] << endl;
-		int k = 0;
-		for (int i = 0; i < N1; i++)
+		int sum;
+		for (sum = 0; sum < N1 + N2 - 1; sum++) arr_sum[sum] = 0;
+		for (sum = 0; sum < N1 + N2 - 1; sum++)
 		{
-			for (int j = 0; j < N2; j++)
+			for (int i = 0; i <= sum && i<N1; i++)
 			{
-				arr_sum[k] = arr1[i] * arr2[j];
-				cout << "Probability of summ " << i + 1 << "*" << j + 1 << " = " << arr_sum[k] << endl;
-				k++;
+				for (int j = 0; j <= sum && j<N2; j++)
+				{
+					if (sum == i+j) arr_sum[sum] += arr1[i] * arr2[j];
+				}
 			}
-			
+		}
+		for (sum = 0; sum < N1 + N2 - 1; sum++)
+		{
+			cout << "Probability of summ " <<sum+2<<" = "<< arr_sum[sum] << endl;
 		}
 	}
 
 	void SumToTree(MyTree<int, double>* my, Dice cybic, int N1, int N2)
 	{
 		//MyTree<int, double> my;
-		for (int k = 0; k < N1*N2; k++)
+		for (int k = 0; k < N1+N2-1; k++)
 		{
 			my->Input(my->GetTree(), k, cybic.arr_sum[k]);
 		}
 	}
-
 };
 
-
-int main()
+void Menu(MyTree<int, double> my, Dice cybic)
 {
-	MyTree<int, double> my;
-	Dice cybic;
 	int N1, N2;
+	cout << "Input max number on dice:" << endl;
 	cout << "Enter N1: ";
 	cin >> N1;
 	cout << endl;
 	cout << "Enter N2: ";
 	cin >> N2;
 	cout << endl;
-	cybic.Arrays(N1, N2);
-	cybic.SumToTree(&my, cybic, N1, N2);
-	my.Output(my.GetTree());
-	/*MyTree<int> my;
-	int n, data, v;
-	cout << "Enter number of nodes: ";
-	cin >> n;
-	cout << "Enter v: ";
-	cin >> v;
-	for (int i = 0; i < n; i++)
+	while (true)
 	{
-		cout << "Enter int " << i << ": ";
-		cin >> data;
-		my.Input(my.GetTree(), data);
+		system("cls");
+		cout << "MENU:\n1)Enter tree and show all amounts\n2)Get probabilities of all amounts and show the tree\n3)Delete node\n4)Show minimum value of the tree\n5)Find value\n6)Show the tree\n";
+		int choice;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			system("cls");
+			while (true)
+			{
+				for (int i = 2; i < cybic.AllSum(N1, N2) + 1; i++)
+					cout << i << endl;
+				int choice;
+				cout << "1)Add one more\n2)Back\n";
+				cin >> choice;
+				if (choice == 2)
+					break;
+				else
+					system("cls");
+			}
+			system("cls");
+			break;
+		case 2:
+			system("cls");
+			int level;
+			cybic.Arrays(N1, N2);
+			cybic.SumToTree(&my, cybic, N1, N2);
+			my.PrintTree(my.GetTree(), level=0);
+			cout << "1)Add one more\n2)Back\n";
+			cin >> choice;
+			if (choice == 2)
+				break;
+			else
+				system("cls");
+			break;
+		case 3:
+			system("cls");
+			double v;
+			cout << "Enter value (probability) to delete: ";
+			cin >> v;
+			my.DeleteNode(my.GetTree(), v);
+			cout << "\n0)Back\n";
+			cin >> choice;
+			if (choice == 0)
+				break;
+			else
+				system("cls");
+			break;
+		case 4:
+			system("cls");
+			my.Min(my.GetTree());
+			cout << "0)Back\n";
+			cin >> choice;
+			if (choice == 0)
+				break;
+			else
+				system("cls");
+			break;
+		case 5:
+			system("cls");
+			int a, count, result;
+			cout << "Enter value (amount) to find: ";
+			cin >> a;
+			result=my.Search(my.GetTree(), a, count=1);
+			cout << result;
+			cout << "\n0)Back\n";
+			cin >> choice;
+			if (choice == 0)
+				break;
+			else
+				system("cls");
+			break;
+		case 6:
+			system("cls");
+			int l;
+			my.PrintTree(my.GetTree(), l=0);
+			cout << "\n0)Back\n";
+			cin >> choice;
+			if (choice == 0)
+				break;
+			else
+				system("cls");
+			break;
+
+		default:
+			system("cls");
+			break;
+		}
 	}
-	my.Output(my.GetTree());
-	cout << endl;*/
-	//count = my.Search(my.GetTree(), v, c = 1);
-	//if (count < 0) cout << "Tree don't have v!" << endl;
-	//else cout << count << endl;
-	//my.DeleteNode(my.GetTree(), v);
+}
+
+int main()
+{
+	MyTree<int, double> my;
+	Dice cybic;
+	Menu(my, cybic);
+	//cybic.Arrays(N1, N2);
+	//cybic.SumToTree(&my, cybic, N1, N2);
 	//my.Output(my.GetTree());
 	system("pause");
 }
