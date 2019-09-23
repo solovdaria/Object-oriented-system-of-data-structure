@@ -62,7 +62,7 @@ public:
 		this->tree = copy.tree;
 	}
 
-	void Input(node*curr,type i, type1 a)
+	void Input(node*curr,type i, type1 a) //ввод дерева
 	{
 		if (tree == nullptr)
 		{
@@ -97,9 +97,9 @@ public:
 				curr->right->index = i;
 				curr->right->info = a;
 			}
-	}
+	} 
 
-	void Output(node*curr)
+	void Output(node*curr) //вывод значений дерева в столбец
 	{
 		if (curr != nullptr)
 		{
@@ -109,7 +109,7 @@ public:
 		}
 	}
 
-	void PrintTree(node*curr, int level)
+	void PrintTree(node*curr, int level) //вывод дерева в виде дерева
 	{
 		if (curr)
 		{
@@ -120,12 +120,18 @@ public:
 		}
 	}
 
-	int Search(node*curr, type1 v, int counter=1) //поиск значения
+	int SearchRecursion(node*curr, type1 v, int counter=1) //поиск елемента в дереве с помощью рекурсии
 	{
-		if (curr == NULL) return -1;
-		if (curr->info == v) return counter;
 
-		if (v <= curr->info)
+		if (curr == NULL) return -1;
+		int tmp = curr->info * 1000;
+		double value;		
+		if (tmp % 10 > 5)
+			value = double((tmp + 1) / 1000.0);
+		else
+			value = double(tmp / 1000.0);
+		if (value == v) return counter;
+		if (v <= value)
 		{
 			if (curr->left != NULL)
 				return Search(curr->left, v, ++counter);
@@ -133,7 +139,7 @@ public:
 		}
 		else
 		{
-			if (v > curr->info)
+			if (v > value)
 			{
 				if (curr->right != NULL)
 					return Search(curr->right, v, ++counter);
@@ -142,40 +148,67 @@ public:
 		}
 	}
 
-	node*Min(node*curr)
+	int SearchLoop(node* curr, type1 v, int counter = 1) //поиск елемента с помощью цикла
+	{
+		while (curr != nullptr)
+		{
+			int tmp = curr->info * 1000;
+			double value;
+			if (tmp % 10 > 5)
+				value = double((tmp + 1) / 1000.0);
+			else
+				value = double(tmp / 1000.0);
+			if (value == v)
+				return counter;
+			counter++;
+			curr = value > v ? curr->left : curr->right;
+		}
+		return -1;
+	}
+
+	node*Min(node*curr) //поиск минимального значения в дереве для функции удаления узла
 	{
 		node*c = curr;
 		while (c && c->left != nullptr) c = c->left;
 		return c;
 	}
 
-	int MinOutput(node*curr)
+	int MinOutput(node*curr) //поиск минимального значения в дереве для вывода
 	{
 		node*c = curr;
 		while (c && c->left != nullptr) c = c->left;
 		return c->index+2;
 	}
 
-	node*DeleteNode(node*curr, type v)
+	node* DeleteNode(node* curr, type1 v) //удаление введенного узла в дереве
 	{
-		if (curr == nullptr) return curr;
-		if (v < curr->info) curr->left = DeleteNode(curr->left, v);
-		else if (v > curr->info) curr->right = DeleteNode(curr->right, v);
+		if (curr == nullptr)
+			return curr;
+		int tmp_ = curr->info * 1000;
+		double value;
+		if (tmp_ % 10 > 5)
+			value = double((tmp_ + 1) / 1000.0);
+		else
+			value = double(tmp_ / 1000.0);
+		if (v < value)
+			curr->left = DeleteNode(curr->left, v);
+		else if (v > value)
+			curr->right = DeleteNode(curr->right, v);
 		else
 		{
 			if (curr->left == nullptr)
 			{
-				node*tmp = curr->right;
+				node* tmp = curr->right;
 				free(curr);
 				return tmp;
 			}
 			else if (curr->right == nullptr)
 			{
-				node*tmp = curr->left;
+				node* tmp = curr->left;
 				free(curr);
 				return tmp;
 			}
-			node*tmp = Min(curr->right);
+			node* tmp = Min(curr->right);
 			curr->info = tmp->info;
 			curr->index = tmp->index;
 			curr->right = DeleteNode(curr->right, tmp->info);
@@ -199,13 +232,20 @@ public:
 		Dice*cybic;
 	}
 
-	int AllSum(int N1, int N2)
+	~Dice()
+	{
+		delete[] arr1;
+		delete[] arr2;
+		delete[] arr_sum;
+	}
+
+	int AllSum(int N1, int N2) //поиск найбольшей возможной суммы на костях
 	{
 		maxSum = N1 + N2;
 		return maxSum;
 	}
 	
-	void SumArr(int size1, int size2)
+	void SumArr(int size1, int size2) //третий массив, созданный из двух массивов с вероятностями хранит вероятности для всех сумм на костях
 	{
 		size = size1 + size2 - 1;
 		arr_sum = new double[size];
@@ -238,7 +278,7 @@ public:
 		}
 	}
 
-	void Arrays(int N1, int N2)
+	void Arrays(int N1, int N2) //ввод двух массивов, в которых хранятся значения вероятностей у двух кубиков
 	{
 		double summa = 0;
 		arr1 = new double[N1];
@@ -263,7 +303,7 @@ public:
 		SumArr(N1, N2);
 	}
 
-	void SumToTree(MyTree<int, double>* my, Dice cybic, int N1, int N2)
+	void SumToTree(MyTree<int, double>* my, Dice cybic, int N1, int N2) //добавления массива вероятностей всех сумм в дерево
 	{
 		for (int k = 0; k < N1+N2-1; k++)
 		{
@@ -321,8 +361,8 @@ void Menu(MyTree<int, double> my, Dice cybic)
 			break;
 		case 3:
 			system("cls");
-			int v;
-			cout << "Enter value (index) to delete: ";
+			double v;
+			cout << "Enter value (probability) to delete: ";
 			cin >> v;
 			my.DeleteNode(my.GetTree(), v);
 			cout << "\n0)Back\n";
@@ -347,7 +387,7 @@ void Menu(MyTree<int, double> my, Dice cybic)
 			double a; int result, c;
 			cout << "Enter value (probability) to find: ";
 			cin >> a;
-			result=my.Search(my.GetTree(), a, c=1);
+			result=my.SearchLoop(my.GetTree(), a, c=1);
 			cout << result;
 			cout << "\n0)Back\n";
 			cin >> choice;
