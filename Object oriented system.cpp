@@ -1,6 +1,4 @@
 ﻿// Object oriented system.cpp 
-
-
 #include <iostream>
 #include "pch.h"
 #include "Dice.h"
