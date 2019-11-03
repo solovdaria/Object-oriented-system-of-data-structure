@@ -1,6 +1,10 @@
 #pragma once
 #include "pch.h"
-#include "MyTree.h"
+#include "node.h"
+#include "BinarySearchTree.h"
+#include "BinaryTree.h"
+#include "N_aryTree.h"
+using namespace std;
 
 /*!
 \brief Class of the dice
@@ -124,18 +128,50 @@ public:
 	}
 
 	/*!
-	Input last array to the tree
-	\param my Is a variable of class MyTree
+	Input last array to the BST tree
+	\param my Is a variable of class BinarySearchTree
 	\param cybic Is a variable of class Dice
 	\paran N1 Size of first array
 	\param N2 Size of second array
 	\param k Index
 	*/
-	void SumToTree(MyTree<int, double>* my, Dice cybic, int N1, int N2) 
+	void SumToBinarySearchTree(BinarySearchTree<int, double>* my, Dice cybic, int N1, int N2)
 	{
 		for (int k = 0; k < N1 + N2 - 1; k++)
 		{
 			my->Input(my->GetTree(), k, cybic.arr_sum[k]);
+		}
+	}
+
+	/*!
+	Input last array to the BT tree
+	\param my Is a variable of class BinaryTree
+	\param cybic Is a variable of class Dice
+	\paran N1 Size of first array
+	\param N2 Size of second array
+	\param k Index
+	*/
+	void SumToBinaryTree(BinaryTree<int, double>* my, Dice cybic, int N1, int N2)
+	{
+		for (int k = 0; k < N1 + N2 - 1; k++)
+		{
+			my->Input(my->GetTree(), k, cybic.arr_sum[k]);
+		}
+	}
+
+	/*!
+	Input last array to the n-ary tree
+	\param my Is a variable of class N_aryTree
+	\param cybic Is a variable of class Dice
+	\paran N1 Size of first array
+	\param N2 Size of second array
+	\param k Index
+	*/
+	void SumToN_aryTree(N_aryTree<int, double>* my, Dice cybic, int N1, int N2)
+	{
+		for (int k = 0; k < N1 + N2 - 1; k++)
+		{
+			my->AddLast(my->GetList(), k, cybic.arr_sum[k]);
 		}
 	}
 };
