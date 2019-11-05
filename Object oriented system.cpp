@@ -197,7 +197,7 @@ void Menu(BinarySearchTree<int, double> myBST, BinaryTree<int, double> myBT, N_a
 				double v;
 				cout << "Enter value (probability) to delete: ";
 				cin >> v;
-				myBT.DeleteNode(myBT.GetTree(), v);
+				myBT.deletion(myBT.GetTree(), v);
 				cout << "\n0)Back\n";
 				cin >> choice;
 				if (choice == 0)
@@ -305,8 +305,11 @@ void Menu(BinarySearchTree<int, double> myBST, BinaryTree<int, double> myBT, N_a
 				break;
 			case 5:
 				system("cls");
+				int u;
+				cout << "Enter number of children: ";
+				cin >> u;
 				N_aryTree<int, double> t;
-				myNT.sort(myNT, t);
+				myNT.Sort(myNT, t, u);
 				t.Output();
 				cout << "\n0)Back\n";
 				cin >> choice;

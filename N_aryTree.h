@@ -4,6 +4,7 @@
 #include "NodeList.h"
 #include <queue>
 #include <vector>
+#include <algorithm>
 #include <list>
 
 using namespace std;
@@ -138,24 +139,42 @@ public:
 	\param a List, which we are working with
 	\param b Created list in the n-ary tree form
 	*/
-	void sort(N_aryTree<int, double> &a, N_aryTree<int, double> &b)
-	{
-		list<double> c;
+	void Sort(N_aryTree<int, double> &a, N_aryTree<int, double> &b, int n) {
+		vector<double> c, d;
 		NodeList<int, double>* head = a.GetHead();
-		while (head != nullptr) 
-		{
+		while (head != nullptr) {
 			c.push_back(head->info);
 			head = head->next;
 		}
 		head = a.GetHead();
-		c.sort();
+		vector<double> c1;
+		//----------------------------------------------------
+		sort(c.begin(), c.end());
+		if (!c.empty()) {
+			int p = 1;
+			while (p + n < c.size()) reverse(&c[p], &c[p + n]), p += n;
+			reverse(&c[p], (&c[c.size() - 1] + 1));
+			int N = n;
+			c1.push_back(c[0]);
+			p = 1;
+			static auto j = c1.begin();
+			while (p != c.size())
+			{
+				while ((N--) && (p != c.size())) j = c1.insert(j, c[p++]);
+				N = n;
+				if (p != c.size()) {
+					while (N--) j++;
+					if (++j == c1.end()) j = c1.begin();
+				}
+				N = n;
+			}
+		}
+		//----------------------------------------------------
 		int j = 0;
-		for (auto i : c)
-		{
+		for (auto i : c1) {
 			b.AddLast(head, j++, i);
-			if (head) head = head->prev;
+			if (head)head = head->prev;
 		}
 	}
-	
 };
 

@@ -2,6 +2,7 @@
 #include "pch.h"
 #include <iostream>
 #include "node.h"
+#include <queue>
 using namespace std;
 
 /*!
@@ -141,8 +142,8 @@ public:
 	node*Deepest(node<int, double>* curr)
 	{
 		node<int, double>* c = curr;
-		while (c->right && c != nullptr) c = c->right;
-		if (c->left != nullptr) c = c->left;
+		while (c && c->right != nullptr) c = c->right;
+		while (c->left != nullptr) c = c->left;
 		return c;
 	}
 
@@ -154,11 +155,11 @@ public:
 	\param tmp_ Variable which contains node's value multiplied for 1000, as searching doesn't works with doubles
 	\param tmp Node which contains descent value of the deleted node and node with the deepest value in the tree
 	*/
-	void DeleteNode(node<int, double>*curr, type1 v)
+	node<int, double>* DeleteNode(node<int, double>*curr, type1 v)
 	{
 		node<int, double>*root = curr;
 		if (curr == nullptr)
-			return;
+			return curr;
 		int tmp_ = curr->info * 1000;
 		double value;
 		if (tmp_ % 10 > 5)
@@ -171,11 +172,13 @@ public:
 			{
 				node<int, double>* tmp = curr->right;
 				free(curr);
+				return tmp;
 			}
 			else if (curr->right == nullptr)
 			{
 				node<int, double>* tmp = curr->left;
 				free(curr);
+				return tmp;
 			}
 			node<int, double>* tmp = Deepest(root);
 			curr->info = tmp->info;
@@ -184,6 +187,96 @@ public:
 		}
 		DeleteNode(root->left, v);
 		DeleteNode(root->right, v);
+		return curr;
+	}
+
+	void deletDeepest(node<int, double>* root, node<int, double>* d_node)
+	{
+		queue<node<int, double>*> q;
+		q.push(root);
+
+		// Do level order traversal until last node 
+		node<int, double>* temp;
+		while (!q.empty()) {
+			temp = q.front();
+			q.pop();
+			if (temp == d_node) {
+				temp = NULL;
+				delete (d_node);
+				return;
+			}
+			if (temp->right) {
+				if (temp->right == d_node) {
+					temp->right = NULL;
+					delete (d_node);
+					return;
+				}
+				else
+					q.push(temp->right);
+			}
+
+			if (temp->left) {
+				if (temp->left == d_node) {
+					temp->left = NULL;
+					delete (d_node);
+					return;
+				}
+				else
+					q.push(temp->left);
+			}
+		}
+	}
+
+	node<int, double>* deletion(node<int, double>* root, type1 key)
+	{
+
+		//node<int, double>*root = curr;
+		if (root == nullptr)
+			return root;
+		int tmp_ = root->info * 1000;
+		double value;
+		if (tmp_ % 10 > 5)
+			value = double((tmp_ + 1) / 1000.0);
+		else
+			value = double(tmp_ / 1000.0);
+		if (root == NULL)
+			return NULL;
+
+		if (root->left == NULL && root->right == NULL) {
+			if (root->info == key)
+				return NULL;
+			else
+				return root;
+		}
+
+		queue<node<int, double>*> q;
+		q.push(root);
+
+		node<int, double>* temp=NULL;
+		node<int, double>* key_node = NULL;
+
+		// Do level order traversal to find deepest 
+		// node(temp) and node to be deleted (key_node) 
+		while (!q.empty()) {
+			temp = q.front();
+			q.pop();
+
+			if (temp->info == key)
+				key_node = temp;
+
+			if (temp->left)
+				q.push(temp->left);
+
+			if (temp->right)
+				q.push(temp->right);
+		}
+
+		if (key_node != NULL) {
+			int x = temp->info;
+			deletDeepest(root, temp);
+			key_node->info = x;
+		}
+		return root;
 	}
 
 	/*!
