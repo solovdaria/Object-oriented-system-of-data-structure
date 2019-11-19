@@ -342,7 +342,6 @@ void Menu(int n, Dice arr[], BinarySearchTree<Dice> BST, BinaryTree<Dice> BT, N_
 		}
 		case 2:
 			system("cls");
-		//	ToBinarySearchTree(&BST, arr, n);
 			cout << "Menu\n1)Print binary search tree\n2)Recursive search\n3)Non-recursive search\n4)Find minimal\n5)Delete node\n";
 			int choice1;
 			cin >> choice1;

@@ -91,7 +91,13 @@ public:
 		current = head;
 		while (current != nullptr)
 		{
-			if (current->info.GetMS() == a.GetMS())
+			int tmp_ = (current->info.GetMS()) * 1000;
+			double value;
+			if (tmp_ % 10 > 5)
+				value = double((tmp_ + 1) / 1000.0);
+			else
+				value = double(tmp_ / 1000.0);
+			if (value == a.GetMS())
 			{
 				cout << current->index + 1 << " ";
 				current = current->next;
@@ -216,7 +222,13 @@ public:
 		NodeList<Dice>*prev = head;
 		while (current != nullptr)
 		{
-			if (current->info.GetMS() == need.GetMS())
+			int tmp_ = (current->info.GetMS()) * 1000;
+			double value;
+			if (tmp_ % 10 > 5)
+				value = double((tmp_ + 1) / 1000.0);
+			else
+				value = double(tmp_ / 1000.0);
+			if (value == need.GetMS())
 			{
 				if (current == head)
 				{
