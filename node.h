@@ -9,7 +9,7 @@ This class is responsible for the tree, it's descents, and values in the node
 \param info Template value in the node, which is responsible for the main value
 \param index Template value in the node, which is responsible for the index
 */
-template <typename type, typename type1>
+template <typename type1>
 class node
 {
 public:
@@ -18,7 +18,6 @@ public:
 		this->right = nullptr;
 		this->left = nullptr;
 	}
-	type index;
 	type1 info;
 	node* right;
 	node* left;

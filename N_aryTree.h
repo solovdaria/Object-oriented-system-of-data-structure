@@ -14,13 +14,13 @@ using namespace std;
 
 This subclass works with n-ary tree and it's functions. Such as input values, create n-ary tree
 output values, do search, delete tree nodes.*/
-template <typename type, typename type1>
-class N_aryTree:public NodeList<int, double>
+template <typename type1>
+class N_aryTree :public NodeList<type1>
 {
 private:
-	NodeList<int, double>*nodes; ///< Tree node
-	NodeList<int, double>*head; ///< List head
-	NodeList<int, double>*tail; ///< List tail
+	NodeList<type1>*nodes; ///< Tree node
+	NodeList<type1>*head; ///< List head
+	NodeList<type1>*tail; ///< List tail
 public:
 	N_aryTree() ///< Constructor by default
 	{
@@ -28,13 +28,13 @@ public:
 		tail = nullptr;
 	}
 
-	NodeList<int, double>*GetList() ///< List getter
+	NodeList<type1>*GetList() ///< List getter
 	{
 		return nodes;
 	}
 
-	NodeList<int, double>* GetHead() ///< Head getter
-	{ 
+	NodeList<type1>* GetHead() ///< Head getter
+	{
 		return head;
 	}
 
@@ -44,9 +44,9 @@ public:
 	\param element Node
 	\param i, a Are responsible for index and main value in the node
 	*/
-	void AddLast(NodeList<int, double>*element, type i, type1 a) 
+	void AddLast(NodeList<type1>*element, int i, type1 a)
 	{
-		element = new NodeList<int, double>;
+		element = new NodeList<type1>;
 		element->info = a;
 		element->index = i;
 		element->next = nullptr;
@@ -70,14 +70,30 @@ public:
 	\param a Searched value
 	\return Index of the searched value in case it was in the list
 	*/
-	void Search(type1 a) 
+	template<typename type1>
+	void Search(NodeList<type1>*current, type1 a)
 	{
-		NodeList*current = head;
+		current = head;
 		while (current != nullptr)
 		{
 			if (current->info == a)
 			{
-				cout << current->index << " ";
+				cout << current->index + 1 << " ";
+				current = current->next;
+			}
+			else current = current->next;
+		}
+	}
+
+	template<>
+	void Search<Dice>(NodeList<Dice>*current, Dice a)
+	{
+		current = head;
+		while (current != nullptr)
+		{
+			if (current->info.GetMS() == a.GetMS())
+			{
+				cout << current->index + 1 << " ";
 				current = current->next;
 			}
 			else current = current->next;
@@ -87,21 +103,47 @@ public:
 	/*!
 	\brief Function for outputing list
 
-	Outputing index and main values 
+	Outputing index and main values
 	\param current Node
 	\param head Head of the list
 	*/
+	template<typename type1>
 	void Output()
 	{
-		NodeList<int, double>*current = head;
+		NodeList<type1>*current = head;
 		while (current != nullptr)
 		{
-			cout << current->index+2 << ":"<<current->info<<" ";
+			cout << current->index + 1 << ":" << current->info << " ";
 			current = current->next;
 		}
 		cout << endl;
 	}
 
+	template<>
+	void Output<vector<int>>()
+	{
+		NodeList<vector<int>>*current = head;
+		while (current != nullptr)
+		{
+			for (int i = 0; i < current->info.size(); i++)
+				cout << current->info[i] << " ";
+			cout << endl;
+			current = current->next;
+		}
+		cout << endl;
+	}
+
+	template<>
+	void Output<Dice>()
+	{
+		NodeList<Dice>*current = head;
+		while (current != nullptr)
+		{
+			cout << "A" << current->info.GetBrinksNum() << ":" << current->info.GetMS() << " ";
+			current = current->next;
+		}
+		cout << endl;
+	}
 	/*!
 	\brief Delets node with inputed value
 
@@ -109,23 +151,24 @@ public:
 	\param need Value which must be deleted
 	\param head Head of the list
 	*/
-	void Delete(type1 need)
+	template<typename type1>
+	void Delete(NodeList<type1>*current, type1 need)
 	{
-		NodeList<int, double>*current = head, *prev = head;
+		current = head; NodeList<type1>*prev = head;
 		while (current != nullptr)
 		{
 			if (current->info == need)
 			{
-				if (current == head) 
+				if (current == head)
 				{
 					head = head->next;
 					delete current;
 					break;
 				}
-				else 
+				else
 				{
 					prev->next = current->next;
-					delete current; 
+					delete current;
 					break;
 				}
 			}
@@ -133,24 +176,86 @@ public:
 		}
 	}
 
+	template<>
+	void Delete<vector<int>>(NodeList<vector<int>>*current, vector<int> need)
+	{
+		current = head; NodeList<vector<int>>*prev = head;
+		while (current != nullptr)
+		{
+			bool b = true;
+			for (int i = 0; i < current->info.size(); i++)
+			{
+				if (current->info[i] != need[i])
+				{
+					b = false;
+				}
+			}
+			if (b)
+			{
+				if (current == head)
+				{
+					head = head->next;
+					delete current;
+					break;
+				}
+				else
+				{
+					prev->next = current->next;
+					delete current;
+					break;
+				}
+			}
+			else { prev = current; current = current->next; }
+		}
+	}
+
+	template<>
+	void Delete<Dice>(NodeList<Dice>*current, Dice need)
+	{
+		current = head;
+		NodeList<Dice>*prev = head;
+		while (current != nullptr)
+		{
+			if (current->info.GetMS() == need.GetMS())
+			{
+				if (current == head)
+				{
+					head = head->next;
+					delete current;
+					break;
+				}
+				else
+				{
+					prev->next = current->next;
+					delete current;
+					break;
+				}
+			}
+			else { prev = current; current = current->next; }
+		}
+	}
 	/*!
 	\brief Sorts list in the n-ary tree form
 
 	\param a List, which we are working with
 	\param b Created list in the n-ary tree form
 	*/
-	void Sort(N_aryTree<int, double> &a, N_aryTree<int, double> &b, int n) {
-		vector<double> c, d;
-		NodeList<int, double>* head = a.GetHead();
-		while (head != nullptr) {
+	template<typename type1>
+	void Sort(N_aryTree<type1> &a, N_aryTree<type1> &b, int n)
+	{
+		vector<type1> c, d;
+		NodeList<type1>* head = a.GetHead();
+		while (head != nullptr)
+		{
 			c.push_back(head->info);
 			head = head->next;
 		}
 		head = a.GetHead();
-		vector<double> c1;
-		//----------------------------------------------------
+		vector<type1> c1;
+
 		sort(c.begin(), c.end());
-		if (!c.empty()) {
+		if (!c.empty())
+		{
 			int p = 1;
 			while (p + n < c.size()) reverse(&c[p], &c[p + n]), p += n;
 			reverse(&c[p], (&c[c.size() - 1] + 1));
@@ -162,19 +267,68 @@ public:
 			{
 				while ((N--) && (p != c.size())) j = c1.insert(j, c[p++]);
 				N = n;
-				if (p != c.size()) {
+				if (p != c.size())
+				{
 					while (N--) j++;
 					if (++j == c1.end()) j = c1.begin();
 				}
 				N = n;
 			}
 		}
-		//----------------------------------------------------
+
 		int j = 0;
-		for (auto i : c1) {
+		for (auto i : c1)
+		{
 			b.AddLast(head, j++, i);
 			if (head)head = head->prev;
 		}
 	}
+
+
+	template<>
+	void Sort<Dice>(N_aryTree<Dice> &a, N_aryTree<Dice> &b, int n)
+	{
+		vector<double> c, d;
+		NodeList<Dice>* head = a.GetHead();
+		while (head != nullptr)
+		{
+			c.push_back(head->info.GetMS());
+			head = head->next;
+		}
+		head = a.GetHead();
+		vector<double> c1;
+
+		sort(c.begin(), c.end());
+		if (!c.empty())
+		{
+			int p = 1;
+			while (p + n < c.size()) reverse(&c[p], &c[p + n]), p += n;
+			reverse(&c[p], (&c[c.size() - 1] + 1));
+			int N = n;
+			c1.push_back(c[0]);
+			p = 1;
+			static auto j = c1.begin();
+			while (p != c.size())
+			{
+				while ((N--) && (p != c.size())) j = c1.insert(j, c[p++]);
+				N = n;
+				if (p != c.size())
+				{
+					while (N--) j++;
+					if (++j == c1.end()) j = c1.begin();
+				}
+				N = n;
+			}
+		}
+
+		int j = 0;
+		for (auto i : c1)
+		{
+			b.AddLast(head, j++, i);
+			if (head)head = head->prev;
+		}
+	}
+
 };
+
 

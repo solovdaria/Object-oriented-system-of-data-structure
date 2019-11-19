@@ -1,8 +1,11 @@
 #pragma once
 #include "pch.h"
 #include <iostream>
+#include "Dice.h"
 #include "node.h"
 #include <queue>
+#include <string>
+#include <vector>
 using namespace std;
 
 /*!
@@ -12,15 +15,56 @@ This subclass works with binary tree and it's functions. Such as input values,
 recursive output values, output in tree form, do recursive search,
 delete tree nodes.*/
 
-template <typename type, typename type1>
-class BinaryTree:public node<int, double>
+template <typename type1>
+class BinaryTree :public node<type1>
 {
 private:
-	node<int, double>* tree; ///< Tree node
+	node<type1>* tree; ///< Tree node
+	/*!
+	\brief Finds deepest value in the tree and returns it's node
+
+	Used for the deleting value function
+	\param root Node
+	\return Node with deepest value
+	*/
+	void deletBTnode(node<type1> *root, node<type1>* del)
+	{
+		queue<node<type1>*> q;
+		q.push(root);
+		node<type1>* temp = nullptr;
+		node<type1>* key_node = nullptr;
+		while (!q.empty()) {
+			temp = q.front();
+			q.pop();
+			if (temp->left != nullptr && temp->left == del)
+			{
+				delete temp->left;
+				temp->left = nullptr;
+				return;
+			}
+			if (temp->right != nullptr && temp->right == del)
+			{
+				delete temp->right;
+				temp->right = nullptr;
+				return;
+			}
+			if (temp->left)
+				q.push(temp->left);
+
+			if (temp->right)
+				q.push(temp->right);
+		}
+	}
+
 public:
-	node<int, double>* GetTree() ///< Tree getter
+	node<type1>* GetTree() ///< Tree getter
 	{
 		return tree;
+	}
+
+	void SetTree(node<type1>*tree)
+	{
+		this->tree = tree;
 	}
 
 	BinaryTree() ///< Constructor by default
@@ -34,78 +78,148 @@ public:
 	\param curr Node
 	\param i, a Are responsible for index and main value in the node
 	*/
-	void Input(node<int, double>* curr, type i, type1 a)
+	template<typename type1>
+	void Input(node<type1>* curr, int i, type1 a)
 	{
 		if (tree == nullptr)
 		{
-			tree = new node();
-			tree->index = i;
+			tree = new node<type1>;
+			//			tree->index = i;
 			tree->info = a;
 			tree->left = tree->right = nullptr;
 		}
 
 		if (curr == nullptr)
 		{
-			curr = new node();
-			curr->index = i;
+			curr = new node<type1>;
+			//			curr->index = i;
 			curr->info = a;
 			curr->left = curr->right = nullptr;
 		}
 
 		if (curr->left == nullptr)
 		{
-			curr->left = new node();
+			curr->left = new node<type1>;
 			curr->left->left = curr->left->right = nullptr;
-			curr->left->index = i;
+			//			curr->left->index = i;
 			curr->left->info = a;
 		}
 		else if (curr->right == nullptr)
 		{
-			curr->right = new node();
+			curr->right = new node<type1>;
 			curr->right->left = curr->right->right = nullptr;
-			curr->right->index = i;
+			//			curr->right->index = i;
 			curr->right->info = a;
 		}
 		else
 			Input(curr->left, i, a);
 	}
-	
+
+	template<>
+	void Input<vector<int>>(node<vector<int>>* curr, int i, vector<int> a)
+	{
+		if (tree == nullptr)
+		{
+			tree = new node<vector<int>>;
+			//			tree->index = i;
+			tree->info = a;
+			tree->left = tree->right = nullptr;
+		}
+
+		if (curr == nullptr)
+		{
+			curr = new node<vector<int>>;
+			//		curr->index = i;
+			curr->info = a;
+			curr->left = curr->right = nullptr;
+		}
+
+		if (curr->left == nullptr)
+		{
+			curr->left = new node<vector<int>>;
+			curr->left->left = curr->left->right = nullptr;
+			//		curr->left->index = i;
+			curr->left->info = a;
+		}
+		else if (curr->right == nullptr)
+		{
+			curr->right = new node<vector<int>>;
+			curr->right->left = curr->right->right = nullptr;
+			//		curr->right->index = i;
+			curr->right->info = a;
+		}
+		else
+			Input(curr->left, i, a);
+	}
+
 	/*!
 	\brief Function for the postorder output
 	*/
-	void PrintPostorder(node<int, double>* curr)
+	template<typename type1>
+	void PrintPostorder(node<type1>* curr)
 	{
 		if (curr == nullptr)
 			return;
 		PrintPostorder(curr->left);
 		PrintPostorder(curr->right);
-		cout << curr->index + 2 << ":" << curr->info << " ";
+		cout << curr->info << " ";
+	}
+
+	template<>
+	void PrintPostorder<Dice>(node<Dice>* curr)
+	{
+		if (curr == nullptr)
+			return;
+		PrintPostorder(curr->left);
+		PrintPostorder(curr->right);
+		cout << "A" << curr->info.GetBrinksNum() << ":" << curr->info.GetMS() << " ";
 	}
 
 	/*!
 	\brief Function for the inorder output
 	*/
-	void PrintInorder(node<int, double>*curr)
+	template<typename type1>
+	void PrintInorder(node<type1>*curr)
 	{
 		if (curr == nullptr)
 			return;
 		PrintInorder(curr->left);
-		cout << curr->index + 2 << ":" << curr->info << " ";;
+		cout << curr->info << " ";;
+		PrintInorder(curr->right);
+	}
+
+	template<>
+	void PrintInorder<Dice>(node<Dice>*curr)
+	{
+		if (curr == nullptr)
+			return;
+		PrintInorder(curr->left);
+		cout << "A" << curr->info.GetBrinksNum() << ":" << curr->info.GetMS() << " ";;
 		PrintInorder(curr->right);
 	}
 
 	/*!
 	\brief Function for the preorder output
 	*/
-	void PrintPreorder(node<int, double>*curr)
+	template<typename type1>
+	void PrintPreorder(node<type1>*curr)
 	{
 		if (curr == nullptr)
 			return;
-		cout <<curr->index+2<<":"<< curr->info << " ";
+		cout << curr->info << " ";
 		PrintPreorder(curr->left);
 		PrintPreorder(curr->right);
 	}
 
+	template<>
+	void PrintPreorder<Dice>(node<Dice>* curr)
+	{
+		if (curr == nullptr)
+			return;
+		cout << "A" << curr->info.GetBrinksNum() << ":" << curr->info.GetMS() << " ";
+		PrintPreorder(curr->left);
+		PrintPreorder(curr->right);
+	}
 	/*!
 	\brief Recursive search for value
 
@@ -114,7 +228,8 @@ public:
 	\param counter Counts level of the searched value
 	\return Level of the searched value in case it was in the tree
 	*/
-	int Search(node<int, double>* curr, type1 v, int counter = 1)
+	template<typename type1>
+	int Search(node<type1>* curr, type1 v, int counter)
 	{
 		if (curr == NULL) return -1;
 		int tmp = curr->info * 1000;
@@ -124,144 +239,114 @@ public:
 		else
 			value = double(tmp / 1000.0);
 
+		if (value == v)
+			return counter;
+
+		if (Search(curr->left, v, counter) != -1)
+			return Search(curr->left, v, ++counter);
+		if (Search(curr->right, v, counter) != -1)
+			return Search(curr->right, v, ++counter);
+		return -1;
+	}
+
+	template<>
+	int Search<string>(node<string>* curr, string v, int counter)
+	{
+		if (curr == nullptr)
+			return -1;
 		if (curr->info == v)
 			return counter;
 
-		return Search(curr->left, v, ++counter);
-		return Search(curr->right, v, ++counter);
+		if (Search(curr->left, v, counter) != -1)
+			return Search(curr->left, v, ++counter);
+		if (Search(curr->right, v, counter) != -1)
+			return Search(curr->right, v, ++counter);
+		return -1;
 	}
 
-	/*!
-	\brief Finds deepest value in the tree and returns it's node
-
-	Used for the deleting value function
-	\param curr Node
-	\param c Node which searches for deepest value
-	\return Node with deepest value
-	*/
-	node*Deepest(node<int, double>* curr)
+	template<>
+	int Search<vector<int>>(node<vector<int>>* curr, vector<int> v, int counter)
 	{
-		node<int, double>* c = curr;
-		while (c && c->right != nullptr) c = c->right;
-		while (c->left != nullptr) c = c->left;
-		return c;
-	}
-
-	/*!
-	\brief Delets node with inputed value
-
-	\param curr Node
-	\param v Value which must be deleted
-	\param tmp_ Variable which contains node's value multiplied for 1000, as searching doesn't works with doubles
-	\param tmp Node which contains descent value of the deleted node and node with the deepest value in the tree
-	*/
-	node<int, double>* DeleteNode(node<int, double>*curr, type1 v)
-	{
-		node<int, double>*root = curr;
 		if (curr == nullptr)
-			return curr;
-		int tmp_ = curr->info * 1000;
-		double value;
-		if (tmp_ % 10 > 5)
-			value = double((tmp_ + 1) / 1000.0);
-		else
-			value = double(tmp_ / 1000.0);
-		if (curr->info==v)
+			return -1;
+		bool b = true;
+		for (int i = 0; i < curr->info.size(); i++)
 		{
-			if (curr->left == nullptr)
+			if (curr->info[i] != v[i])
 			{
-				node<int, double>* tmp = curr->right;
-				free(curr);
-				return tmp;
-			}
-			else if (curr->right == nullptr)
-			{
-				node<int, double>* tmp = curr->left;
-				free(curr);
-				return tmp;
-			}
-			node<int, double>* tmp = Deepest(root);
-			curr->info = tmp->info;
-			curr->index = tmp->index;
-			DeleteNode(root, tmp->info);
-		}
-		DeleteNode(root->left, v);
-		DeleteNode(root->right, v);
-		return curr;
-	}
-
-	void deletDeepest(node<int, double>* root, node<int, double>* d_node)
-	{
-		queue<node<int, double>*> q;
-		q.push(root);
-
-		// Do level order traversal until last node 
-		node<int, double>* temp;
-		while (!q.empty()) {
-			temp = q.front();
-			q.pop();
-			if (temp == d_node) {
-				temp = NULL;
-				delete (d_node);
-				return;
-			}
-			if (temp->right) {
-				if (temp->right == d_node) {
-					temp->right = NULL;
-					delete (d_node);
-					return;
-				}
-				else
-					q.push(temp->right);
-			}
-
-			if (temp->left) {
-				if (temp->left == d_node) {
-					temp->left = NULL;
-					delete (d_node);
-					return;
-				}
-				else
-					q.push(temp->left);
+				b = false;
 			}
 		}
+		if (b)
+			return counter;
+
+		if (Search(curr->left, v, counter) != -1)
+			return Search(curr->left, v, ++counter);
+		if (Search(curr->right, v, counter) != -1)
+			return Search(curr->right, v, ++counter);
+		return -1;
 	}
 
-	node<int, double>* deletion(node<int, double>* root, type1 key)
+	template<>
+	int Search<Dice>(node<Dice>* curr, Dice v, int counter)
 	{
+		if (curr == NULL) return -1;
+		int tmp = curr->info.GetMS() * 1000;
+		double value;
+		if (tmp % 10 > 5)
+			value = double((tmp + 1) / 1000.0);
+		else
+			value = double(tmp / 1000.0);
 
-		//node<int, double>*root = curr;
-		if (root == nullptr)
-			return root;
+		if (value == v.GetMS())
+			return --counter;
+
+		if (Search(curr->left, v, ++counter) != -1)
+			return Search(curr->left, v, ++counter);
+		if (Search(curr->right, v, ++counter) != -1)
+			return Search(curr->right, v, ++counter);
+		return -1;
+
+	}
+
+	
+
+	/* function to delete element in binary tree */
+	template<typename type1>
+	node<type1>* deletion(node<type1>* root, type1 key)
+	{
 		int tmp_ = root->info * 1000;
 		double value;
 		if (tmp_ % 10 > 5)
 			value = double((tmp_ + 1) / 1000.0);
 		else
 			value = double(tmp_ / 1000.0);
-		if (root == NULL)
-			return NULL;
+		if (root == nullptr)
+			return nullptr;
 
-		if (root->left == NULL && root->right == NULL) {
-			if (root->info == key)
-				return NULL;
+		if (root->left == nullptr && root->right == nullptr) {
+			if (value == key)
+				return nullptr;
 			else
 				return root;
 		}
 
-		queue<node<int, double>*> q;
+		queue<node<type1>*> q;
 		q.push(root);
 
-		node<int, double>* temp=NULL;
-		node<int, double>* key_node = NULL;
-
-		// Do level order traversal to find deepest 
-		// node(temp) and node to be deleted (key_node) 
+		node<type1>* temp = nullptr;
+		node<type1>* key_node = nullptr;
 		while (!q.empty()) {
 			temp = q.front();
 			q.pop();
 
-			if (temp->info == key)
+			int tmp1 = temp->info * 1000;
+			double value1;
+			if (tmp1 % 10 > 5)
+				value1 = double((tmp1 + 1) / 1000.0);
+			else
+				value1 = double(tmp1 / 1000.0);
+			if (value1 == key)
 				key_node = temp;
 
 			if (temp->left)
@@ -270,15 +355,188 @@ public:
 			if (temp->right)
 				q.push(temp->right);
 		}
-
-		if (key_node != NULL) {
-			int x = temp->info;
-			deletDeepest(root, temp);
-			key_node->info = x;
+		if (key_node != temp)
+		{
+			if (key_node != nullptr) {
+				double x = temp->info;
+				deletBTnode(root, temp);
+				key_node->info = x;
+			}
 		}
+		else deletBTnode(root, temp);
 		return root;
 	}
 
+
+	template<>
+	node<vector<int>>* deletion(node<vector<int>>* root, vector<int> key)
+	{
+		if (root == nullptr)
+			return nullptr;
+
+		if (root->left == nullptr && root->right == nullptr) {
+			bool b = true;
+			for (int i = 0; i < root->info.size(); i++)
+			{
+				if (root->info[i] != key[i])
+				{
+					b = false;
+				}
+			}
+			if (b)
+				return nullptr;
+			else
+				return root;
+		}
+
+		queue<node<vector<int>>*> q;
+		q.push(root);
+
+		node<vector<int>>* temp = nullptr;
+		node<vector<int>>* key_node = nullptr;
+		while (!q.empty()) {
+			temp = q.front();
+			q.pop();
+
+			bool bs = true;
+			for (int i = 0; i < temp->info.size(); i++)
+			{
+				if (temp->info[i] != key[i])
+					bs = false;
+			}
+			if (bs)
+				key_node = temp;
+			if (temp->left)
+				q.push(temp->left);
+
+			if (temp->right)
+				q.push(temp->right);
+		}
+		if (key_node != temp)
+		{
+			if (key_node != nullptr) {
+				vector<int> x = temp->info;
+				deletBTnode(root, temp);
+				key_node->info = x;
+			}
+		}
+		else
+			deletBTnode(root, temp);
+		return root;
+	}
+
+	template<>
+	node<Dice>* deletion(node<Dice>* root, Dice key)
+	{
+
+		int tmp_ = root->info.GetMS() * 1000;
+		double value;
+		if (tmp_ % 10 > 5)
+			value = double((tmp_ + 1) / 1000.0);
+		else
+			value = double(tmp_ / 1000.0);
+		if (root == nullptr)
+			return nullptr;
+
+		if (root->left == nullptr && root->right == nullptr) {
+			if (value == key.GetMS())
+				return nullptr;
+			else
+				return root;
+		}
+
+		queue<node<Dice>*> q;
+		q.push(root);
+
+		node<Dice>* temp = nullptr;
+		node<Dice>* key_node = nullptr;
+		while (!q.empty()) {
+			temp = q.front();
+			q.pop();
+
+			int tmp1 = temp->info.GetMS() * 1000;
+			double value1;
+			if (tmp1 % 10 > 5)
+				value1 = double((tmp1 + 1) / 1000.0);
+			else
+				value1 = double(tmp1 / 1000.0);
+			if (value1 == key.GetMS())
+				key_node = temp;
+
+			if (temp->left)
+				q.push(temp->left);
+
+			if (temp->right)
+				q.push(temp->right);
+		}
+		if (key_node != temp)
+		{
+			if (key_node != nullptr) {
+				double x = temp->info.GetMS();
+				deletBTnode(root, temp);
+				key_node->info.SetMS(x);
+			}
+		}
+		else deletBTnode(root, temp);
+		return root;
+	}
+
+	template<>
+	node<string>* deletion(node<string>* root, string key)
+	{
+
+		if (root == nullptr)
+			return nullptr;
+
+		if (root->left == nullptr && root->right == nullptr) {
+			if (root->info == key)
+				return nullptr;
+			else
+				return root;
+		}
+
+		queue<node<string>*> q;
+		q.push(root);
+
+		node<string>* temp = nullptr;
+		node<string>* key_node = nullptr;
+		while (!q.empty()) {
+			temp = q.front();
+			q.pop();
+
+			if (temp->info == key)
+				key_node = temp;
+
+			if (temp->left != nullptr && temp->left->info == key &&
+				temp->left->left == nullptr && temp->left->right == nullptr)
+			{
+				delete temp->left;
+				temp->left = nullptr;
+			}
+			if (temp->right != nullptr && temp->right->info == key &&
+				temp->right->left == nullptr && temp->right->right == nullptr)
+			{
+				delete temp->right;
+				temp->right = nullptr;
+			}
+
+			if (temp->left)
+				q.push(temp->left);
+
+			if (temp->right)
+				q.push(temp->right);
+		}
+		if (key_node != temp)
+		{
+			if (key_node != nullptr) {
+				string x = temp->info;
+				deletBTnode(root, temp);
+				key_node->info = x;
+			}
+		}
+		else deletBTnode(root, temp);
+		return root;
+	}
 	/*!
 	\brief Outputs tree in the tree in the tree form
 
@@ -286,15 +544,42 @@ public:
 	\param curr Node
 	\param level Is responsible for value level in the tree
 	*/
-	void PrintTree(node<int, double>* curr, int level)
+	template<typename type1>
+	void PrintTree(node<type1>* curr, int level)
 	{
 		if (curr)
 		{
 			PrintTree(curr->right, level + 1);
 			for (int i = 0; i < level; i++) cout << "         ";
-			cout << "(" << curr->index + 2 << ":" << curr->info << ")" << endl;
+			cout << "(" << curr->info << ")" << endl;
 			PrintTree(curr->left, level + 1);
 		}
 	}
-};
 
+	template<>
+	void PrintTree<vector<int>>(node<vector<int>>* curr, int level)
+	{
+		if (curr)
+		{
+			PrintTree(curr->right, level + 1);
+			for (int i = 0; i < level; i++) cout << "         ";
+			for (int i = 0; i < curr->info.size(); i++)
+				cout << curr->info[i] << " ";
+			cout << endl;
+			PrintTree(curr->left, level + 1);
+		}
+	}
+
+	template<>
+	void PrintTree<Dice>(node<Dice>* curr, int level)
+	{
+		if (curr)
+		{
+			PrintTree(curr->right, level + 1);
+			for (int i = 0; i < level; i++) cout << "         ";
+			cout << "(A" << curr->info.GetBrinksNum() << ":" << curr->info.GetMS() << ")" << endl;
+			PrintTree(curr->left, level + 1);
+		}
+	}
+
+};
