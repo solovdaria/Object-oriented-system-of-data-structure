@@ -1,11 +1,10 @@
 ﻿// Object oriented system.cpp 
 #include <iostream>
 #include "pch.h"
-#include "node.h"
-#include "Dice.h"
-#include "SetOfDice.h"
-#include "BinarySearchTree.h"
-#include "N_aryTree.h"
+#include "Trees/BinarySearchTree.h"
+#include "Trees/BinaryTree.h"
+#include "Trees/N_aryTree.h"
+#include "Dice/SetOfDice.h"
 #include <list>
 #include <string>
 #include <vector>
