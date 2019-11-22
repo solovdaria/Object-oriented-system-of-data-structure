@@ -1,9 +1,9 @@
 #pragma once
 #include "pch.h"
 #include <iostream>
-#include "SetOfDice.h"
-#include "Dice.h"
-#include "node.h"
+#include "Dice/SetOfDice.h"
+#include "Dice/Dice.h"
+#include "Nodes/node.h"
 #include <queue>
 #include <string>
 #include <vector>

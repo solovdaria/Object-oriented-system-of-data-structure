@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include <iostream>
-#include "NodeList.h"
+#include "Nodes/NodeList.h"
 #include <queue>
 #include <vector>
 #include <algorithm>
