@@ -1,10 +1,10 @@
 ﻿// Object oriented system.cpp 
 #include <iostream>
 #include "pch.h"
-#include "Trees/BinarySearchTree.h"
-#include "Trees/BinaryTree.h"
-#include "Trees/N_aryTree.h"
-#include "Dice/SetOfDice.h"
+#include "BinarySearchTree.h"
+#include "BinaryTree.h"
+#include "N_aryTree.h"
+#include "SetOfDice.h"
 #include <list>
 #include <string>
 #include <vector>
@@ -623,11 +623,6 @@ int main()
 	cout << "Enter quantity of sets: ";
 	cin >> n;
 	SetOfDice*cybic=new SetOfDice[n];
-	for (int i = 0; i < n; i++)
-	{
-		int a = 1 + rand() % 10;
-		cybic[i].SetNumOfDice(a);
-	}
 	
 	cout << endl;
 	system("pause");
