@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.h"
+//#include "pch.h"
 #include <iostream>
 #include "SetOfDice.h"
 #include "node.h"
@@ -9,7 +9,6 @@ using namespace std;
 
 /*!
 \brief Subclass of class node
-
 This subclass works with binary search tree and it's functions. Such as input values,
 recursive and non-recursive output values, output in tree form, do recursive and non-recursive search,
 delete tree nodes and search minimal values.*/
@@ -21,7 +20,6 @@ private:
 	node<type1>* tree; ///< Tree node
 	/*!
 	\brief Function shows if vectors are equal
-
 	\param a, b Vectors
 	*/
 	int Equal(vector<int> a, vector<int> b)
@@ -41,7 +39,6 @@ private:
 	}
 	/*!
 	\brief Finds minimal value in the tree and returns it's node
-
 	Used for the deleting value function
 	\param curr Node
 	\param c Node which searches for minimal value
@@ -75,12 +72,11 @@ public:
 
 	/*!
 	\brief Function for the binary search tree input
-
 	\param curr Node
 	\param i, a Are responsible for index and main value in the node
 	*/
 	template <typename type1>
-	void Input(node<type1>* curr, int i, type1 a, int j)
+	void Input(node<type1>* curr, type1 a, int j)
 	{
 		if (tree == nullptr)
 		{
@@ -92,38 +88,34 @@ public:
 		if (curr == nullptr)
 		{
 			curr = new node<type1>;
-			//	curr->index = i;
 			curr->info = a;
 			curr->left = curr->right = nullptr;
 		}
 		if (a < curr->info)
-			if (curr->left != nullptr) Input(curr->left, i, a, 0);
+			if (curr->left != nullptr) Input(curr->left, a, 0);
 			else
 			{
 				curr->left = new node<type1>;
 				curr->left->left = curr->left->right = nullptr;
-				//		curr->left->index = i;
 				curr->left->info = a;
 			}
 		if (a > curr->info)
-			if (curr->right != nullptr) Input(curr->right, i, a, 0);
+			if (curr->right != nullptr) Input(curr->right, a, 0);
 			else
 			{
 				curr->right = new node<type1>;
 				curr->right->left = curr->right->right = nullptr;
-				//		curr->right->index = i;
 				curr->right->info = a;
 			}
 	}
 
 	template<>
-	void Input<string>(node<string>* curr, int i, string str, int j)
+	void Input<string>(node<string>* curr, string str, int j)
 	{
 		int a = str[j];
 		if (tree == nullptr)
 		{
 			tree = new node<string>;
-			//		tree->index = i;
 			tree->info = str;
 			tree->left = tree->right = nullptr;
 			return;
@@ -132,7 +124,6 @@ public:
 		if (curr == nullptr)
 		{
 			curr = new node<string>;
-			//	curr->index = i;
 			curr->info = str;
 			curr->left = curr->right = nullptr;
 			return;
@@ -140,37 +131,34 @@ public:
 		if (a == curr->info[j])
 		{
 			j++;
-			Input(curr, i, str, j);
+			Input(curr, str, j);
 			return;
 		}
 		if (a < curr->info[j])
-			if (curr->left != nullptr) Input(curr->left, i, str, 0);
+			if (curr->left != nullptr) Input(curr->left, str, 0);
 			else
 			{
 				curr->left = new node<string>;
 				curr->left->left = curr->left->right = nullptr;
-				//				curr->left->index = i;
 				curr->left->info = str;
 			}
 		if (a > curr->info[j])
-			if (curr->right != nullptr) Input(curr->right, i, str, 0);
+			if (curr->right != nullptr) Input(curr->right, str, 0);
 			else
 			{
 				curr->right = new node<string>;
 				curr->right->left = curr->right->right = nullptr;
-				//				curr->right->index = i;
 				curr->right->info = str;
 			}
 	}
 
 	template<>
-	void Input<vector<int>>(node<vector<int>>* curr, int i, vector<int> a, int j)
+	void Input<vector<int>>(node<vector<int>>* curr, vector<int> a, int j)
 	{
 		int b = a[j];
 		if (tree == nullptr)
 		{
 			tree = new node<vector<int>>;
-			//	tree->index = i;
 			tree->info = a;
 			tree->left = tree->right = nullptr;
 			return;
@@ -179,7 +167,6 @@ public:
 		if (curr == nullptr)
 		{
 			curr = new node<vector<int>>;
-			//		curr->index = i;
 			curr->info = a;
 			curr->left = curr->right = nullptr;
 			return;
@@ -187,31 +174,29 @@ public:
 		if (b == curr->info[j])
 		{
 			j++;
-			Input(curr, i, a, j);
+			Input(curr, a, j);
 			return;
 		}
 		if (b < curr->info[j])
-			if (curr->left != nullptr) Input(curr->left, i, a, 0);
+			if (curr->left != nullptr) Input(curr->left, a, 0);
 			else
 			{
 				curr->left = new node<vector<int>>;
 				curr->left->left = curr->left->right = nullptr;
-				//				curr->left->index = i;
 				curr->left->info = a;
 			}
 		if (b > curr->info[j])
-			if (curr->right != nullptr) Input(curr->right, i, a, 0);
+			if (curr->right != nullptr) Input(curr->right, a, 0);
 			else
 			{
 				curr->right = new node<vector<int>>;
 				curr->right->left = curr->right->right = nullptr;
-				//				curr->right->index = i;
 				curr->right->info = a;
 			}
 	}
 
 	template<>
-	void Input<class SetOfDice>(node<class SetOfDice>* curr, int i, SetOfDice a, int j)
+	void Input<class SetOfDice>(node<class SetOfDice>* curr, SetOfDice a, int j)
 	{
 		if (tree == nullptr)
 		{
@@ -227,7 +212,7 @@ public:
 			curr->left = curr->right = nullptr;
 		}
 		if (a.GetAmountMS() < curr->info.GetAmountMS())
-			if (curr->left != nullptr) Input(curr->left, i, a, 0);
+			if (curr->left != nullptr) Input(curr->left, a, 0);
 			else
 			{
 				curr->left = new node<SetOfDice>;
@@ -235,7 +220,7 @@ public:
 				curr->left->info = a;
 			}
 		if (a.GetAmountMS() > curr->info.GetAmountMS())
-			if (curr->right != nullptr) Input(curr->right, i, a, 0);
+			if (curr->right != nullptr) Input(curr->right, a, 0);
 			else
 			{
 				curr->right = new node<SetOfDice>;
@@ -246,7 +231,6 @@ public:
 
 	/*!
 	\brief Function for outputing tree
-
 	Recursive outputing index and main values by main values from smallest to the biggest
 	\param curr Node
 	*/
@@ -266,7 +250,7 @@ public:
 		if (curr != nullptr)
 		{
 			Output(curr->left);
-			cout << curr->info.GetAmountMS() << ")" << endl;
+			cout << curr->info.GetAmountMS() << endl;
 			Output(curr->right);
 		}
 	}
@@ -285,7 +269,6 @@ public:
 
 	/*!
 	\brief Outputs tree in the tree in the tree form
-
 	Left (smaller) values are higher, right (bigger) values are lower
 	\param curr Node
 	\param level Is responsible for value level in the tree
@@ -331,7 +314,6 @@ public:
 
 	/*!
 	\brief Recursive search for value
-
 	\param curr Node
 	\param v Searched value
 	\param counter Counts level of the searched value
@@ -440,7 +422,6 @@ public:
 	}
 	/*!
 	\brief Non-recursive search for the value
-
 	\param curr Node
 	\param v Searched value
 	\param counter Counts level of the searched value
@@ -499,11 +480,10 @@ public:
 		}
 		return -1;
 	}
-	
+
 
 	/*!
 	\brief Finds minimal value in the tree and returns it
-
 	Used for the outputing minimal value
 	\param curr Node
 	\param c Node which searches for minimal value
@@ -526,7 +506,6 @@ public:
 	}
 	/*!
 	\brief Delets node with inputed value
-
 	\param curr Node
 	\param v Value which must be deleted
 	\param tmp_ Variable which contains node's value multiplied for 1000, as searching doesn't works with doubles

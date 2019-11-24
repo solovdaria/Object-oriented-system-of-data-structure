@@ -1,19 +1,19 @@
 #pragma once
 #include "Dice.h"
+#include <vector>
 
-class SetOfDice 
+class SetOfDice
 {
-	const int numOfDice=5;
+//	const int numOfDice = 5;
 	Dice*arrDice;
-	double amountMS=0;
+	double amountMS = 0;
 	int amount = 0;
 public:
 	SetOfDice();
-	~SetOfDice();
-	Dice*GetSetOfDice();
+	Dice* GetSetOfDice();
 	double GetAmountMS();
 	void SetAmountMS(double amountMS);
 	void GenerateDice();
-	void CountAmountMS();
+	double CountAmountMS();
 	void Amounts();
 };

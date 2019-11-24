@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.h"
+//#include "pch.h"
 #include <iostream>
 #include "NodeList.h"
 #include <queue>
@@ -11,16 +11,15 @@ using namespace std;
 
 /*!
 \brief Subclass of class NodeList
-
 This subclass works with n-ary tree and it's functions. Such as input values, create n-ary tree
 output values, do search, delete tree nodes.*/
 template <typename type1>
 class N_aryTree :public NodeList<type1>
 {
 private:
-	NodeList<type1>*nodes; ///< Tree node
-	NodeList<type1>*head; ///< List head
-	NodeList<type1>*tail; ///< List tail
+	NodeList<type1>* nodes; ///< Tree node
+	NodeList<type1>* head; ///< List head
+	NodeList<type1>* tail; ///< List tail
 public:
 	N_aryTree() ///< Constructor by default
 	{
@@ -28,7 +27,7 @@ public:
 		tail = nullptr;
 	}
 
-	NodeList<type1>*GetList() ///< List getter
+	NodeList<type1>* GetList() ///< List getter
 	{
 		return nodes;
 	}
@@ -40,11 +39,10 @@ public:
 
 	/*!
 	\brief Function for the n-ary tree list add to the end of the list
-
 	\param element Node
 	\param i, a Are responsible for index and main value in the node
 	*/
-	void AddLast(NodeList<type1>*element, int i, type1 a)
+	void AddLast(NodeList<type1>* element, int i, type1 a)
 	{
 		element = new NodeList<type1>;
 		element->info = a;
@@ -65,13 +63,12 @@ public:
 
 	/*!
 	\brief Search for value
-
 	\param current Node
 	\param a Searched value
 	\return Index of the searched value in case it was in the list
 	*/
 	template<typename type1>
-	void Search(NodeList<type1>*current, type1 a)
+	void Search(NodeList<type1>* current, type1 a)
 	{
 		current = head;
 		while (current != nullptr)
@@ -86,7 +83,7 @@ public:
 	}
 
 	template<>
-	void Search<SetOfDice>(NodeList<SetOfDice>*current, SetOfDice a)
+	void Search<SetOfDice>(NodeList<SetOfDice>* current, SetOfDice a)
 	{
 		current = head;
 		while (current != nullptr)
@@ -108,7 +105,6 @@ public:
 
 	/*!
 	\brief Function for outputing list
-
 	Outputing index and main values
 	\param current Node
 	\param head Head of the list
@@ -116,7 +112,7 @@ public:
 	template<typename type1>
 	void Output()
 	{
-		NodeList<type1>*current = head;
+		NodeList<type1>* current = head;
 		while (current != nullptr)
 		{
 			cout << current->index + 1 << ":" << current->info << " ";
@@ -128,7 +124,7 @@ public:
 	template<>
 	void Output<vector<int>>()
 	{
-		NodeList<vector<int>>*current = head;
+		NodeList<vector<int>>* current = head;
 		while (current != nullptr)
 		{
 			for (int i = 0; i < current->info.size(); i++)
@@ -142,25 +138,24 @@ public:
 	template<>
 	void Output<SetOfDice>()
 	{
-		NodeList<SetOfDice>*current = head;
+		NodeList<SetOfDice>* current = head;
 		while (current != nullptr)
 		{
-			cout << "A" << current->info.GetNumOfDice() << ":" << current->info.GetAmountMS() << " ";
+			cout << current->info.GetAmountMS() << " ";
 			current = current->next;
 		}
 		cout << endl;
 	}
 	/*!
 	\brief Delets node with inputed value
-
 	\param current Node
 	\param need Value which must be deleted
 	\param head Head of the list
 	*/
 	template<typename type1>
-	void Delete(NodeList<type1>*current, type1 need)
+	void Delete(NodeList<type1>* current, type1 need)
 	{
-		current = head; NodeList<type1>*prev = head;
+		current = head; NodeList<type1>* prev = head;
 		while (current != nullptr)
 		{
 			if (current->info == need)
@@ -183,9 +178,9 @@ public:
 	}
 
 	template<>
-	void Delete<vector<int>>(NodeList<vector<int>>*current, vector<int> need)
+	void Delete<vector<int>>(NodeList<vector<int>>* current, vector<int> need)
 	{
-		current = head; NodeList<vector<int>>*prev = head;
+		current = head; NodeList<vector<int>>* prev = head;
 		while (current != nullptr)
 		{
 			bool b = true;
@@ -216,10 +211,10 @@ public:
 	}
 
 	template<>
-	void Delete<SetOfDice>(NodeList<SetOfDice>*current, SetOfDice need)
+	void Delete<SetOfDice>(NodeList<SetOfDice>* current, SetOfDice need)
 	{
 		current = head;
-		NodeList<SetOfDice>*prev = head;
+		NodeList<SetOfDice>* prev = head;
 		while (current != nullptr)
 		{
 			int tmp_ = (current->info.GetAmountMS()) * 1000;
@@ -248,12 +243,11 @@ public:
 	}
 	/*!
 	\brief Sorts list in the n-ary tree form
-
 	\param a List, which we are working with
 	\param b Created list in the n-ary tree form
 	*/
 	template<typename type1>
-	void Sort(N_aryTree<type1> &a, N_aryTree<type1> &b, int n)
+	void Sort(N_aryTree<type1>& a, N_aryTree<type1>& b, int n)
 	{
 		vector<type1> c, d;
 		NodeList<type1>* head = a.GetHead();
@@ -298,7 +292,7 @@ public:
 
 
 	template<>
-	void Sort<SetOfDice>(N_aryTree<SetOfDice> &a, N_aryTree<SetOfDice> &b, int n)
+	void Sort<SetOfDice>(N_aryTree<SetOfDice>& a, N_aryTree<SetOfDice>& b, int n)
 	{
 		vector<double> c, d;
 		NodeList<SetOfDice>* head = a.GetHead();
@@ -342,5 +336,3 @@ public:
 	}
 
 };
-
-

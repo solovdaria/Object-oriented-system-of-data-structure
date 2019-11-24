@@ -1,20 +1,24 @@
-#include "pch.h"
+//#include "pch.h"
 #include <iostream>
 #include "Dice.h"
 
+
+Dice::Dice() ///< Constructor by default
+{
+	MS = 0;
+}
+
 /*!
 \brief Function for counting mathematic expectation
-
 \param MS Mathematic expectation
 \return Mathematic expectation
 */
-double Dice::CountMS()
+void Dice::CountMS()
 {
 	for (int i = 0; i < brinksNum; i++)
 	{
-		MS += ((i + 1)*arrProbability[i]);
+		MS += (i+1) * arrProbability[i];
 	}
-	return MS;
 }
 
 /*!
@@ -31,9 +35,8 @@ void Dice::PrintProb()
 
 /*!
 \brief Function for generating probabilities
-
 \param arrProbability Array with probabilities
-\param sum Parametr that need to count last brink probability 
+\param sum Parametr that need to count last brink probability
 */
 void Dice::GenerateProb()
 {
@@ -41,7 +44,7 @@ void Dice::GenerateProb()
 	double sum = 0;
 	for (int i = 0; i < brinksNum; i++)
 	{
-		arrProbability[i] = (1 + rand() % (100 / brinksNum))*0.01;
+		arrProbability[i] = (1 + rand() % (100 / brinksNum)) * 0.01;
 		sum += arrProbability[i];
 	}
 	if (sum >= 1) arrProbability[brinksNum - 1] = 0;
@@ -72,7 +75,6 @@ int Dice::GetBrinksNum() ///< Getter for BrinksNum
 
 /*!
 \brief The biggest possible amount on two dice
-
 Summarizes array sizes
 \param N1 Size of first array, that means the biggest value on the first dice
 \param N2 Size of second array, that means the biggest value on the second dice
@@ -107,7 +109,6 @@ Summarizes array sizes
 /*!
 \brief From two arrays of dice's values probabilities creates array, which indexes + 2
 means amount of arrays, and values means probability of it's amount
-
 First step is inputing multiplication of two values (probabilities) in arrays in case amount of
 it's indeces = index of created array. Second step is comparisom of two values in arrays (probabilities
 on dice) and output received

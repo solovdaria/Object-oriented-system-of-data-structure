@@ -1,6 +1,6 @@
 ﻿// Object oriented system.cpp 
+//#include "pch.h"
 #include <iostream>
-#include "pch.h"
 #include "BinarySearchTree.h"
 #include "BinaryTree.h"
 #include "N_aryTree.h"
@@ -13,7 +13,6 @@ using namespace std;
 
 /*!
 \brief Demonstration of working with string
-
 Shows strings in all trees, deletes node and finds node
 \param str String
 \param n Number of string
@@ -30,8 +29,8 @@ void StringDemonstration(BinarySearchTree<string> bst, BinaryTree<string> bt, N_
 	{
 		cout << "Enter string: ";
 		cin >> str;
-		bst.Input(bst.GetTree(), i, str, 0);
-		bt.Input(bt.GetTree(), i, str);
+		bst.Input(bst.GetTree(), str, 0);
+		bt.Input(bt.GetTree(), str);
 		nt.AddLast(nt.GetList(), i, str);
 	}
 	if (n > 1)
@@ -70,7 +69,6 @@ void StringDemonstration(BinarySearchTree<string> bst, BinaryTree<string> bt, N_
 
 /*!
 \brief Demonstration of working with integers
-
 Shows integers in all trees, deletes node and finds node
 \param a Integer
 \param n Number of integers
@@ -86,8 +84,8 @@ void IntDemonstration(BinarySearchTree<int> bst, BinaryTree<int> bt, N_aryTree<i
 	for (int i = 0; i < n; i++)
 	{
 		a = 1 + rand() % 100;
-		bst.Input(bst.GetTree(), i, a, 0);
-		bt.Input(bt.GetTree(), i, a);
+		bst.Input(bst.GetTree(), a, 0);
+		bt.Input(bt.GetTree(), a);
 		nt.AddLast(nt.GetList(), i, a);
 	}
 	if (n > 1)
@@ -127,7 +125,6 @@ void IntDemonstration(BinarySearchTree<int> bst, BinaryTree<int> bt, N_aryTree<i
 
 /*!
 \brief Demonstration of working with doubles
-
 Shows doubles in all trees, deletes node and finds node
 \param a Double
 \param n Number of doubles
@@ -142,9 +139,9 @@ void DoubleDemonstration(BinarySearchTree<double> bst, BinaryTree<double> bt, N_
 	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
-		a = (1 + rand() % 100)*0.01;
-		bst.Input(bst.GetTree(), i, a, 0);
-		bt.Input(bt.GetTree(), i, a);
+		a = (1 + rand() % 100) * 0.01;
+		bst.Input(bst.GetTree(), a, 0);
+		bt.Input(bt.GetTree(), a);
 		nt.AddLast(nt.GetList(), i, a);
 	}
 	if (n > 1)
@@ -183,7 +180,6 @@ void DoubleDemonstration(BinarySearchTree<double> bst, BinaryTree<double> bt, N_
 
 /*!
 \brief Demonstration of working with vectors
-
 Shows vectors in all trees, deletes node and finds node
 \param vec Vector
 \param n Number of vectors
@@ -201,8 +197,8 @@ void VectorDemonstration(BinarySearchTree<vector<int>> bst, BinaryTree<vector<in
 		vector<int> vec;
 		for (int j = 0; j < 3; j++)
 			vec.push_back(1 + rand() % 100);
-		bst.Input<vector<int>>(bst.GetTree(), i, vec, 0);
-		bt.Input<vector<int>>(bt.GetTree(), i, vec);
+		bst.Input<vector<int>>(bst.GetTree(), vec, 0);
+		bt.Input<vector<int>>(bt.GetTree(), vec);
 		nt.AddLast(nt.GetList(), i, vec);
 	}
 	if (n > 1)
@@ -250,8 +246,7 @@ void VectorDemonstration(BinarySearchTree<vector<int>> bst, BinaryTree<vector<in
 }
 
 /*!
-Input last array to the BST 
-
+Input last array to the BST
 \param my Is a variable of class BinarySearchTree
 \param arr Array of elements of class Dice
 \paran n Size of array
@@ -261,13 +256,12 @@ void ToBinarySearchTree(BinarySearchTree<SetOfDice>* my, SetOfDice arr[], int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		my->Input(my->GetTree(), i, arr[i], 0);
+		my->Input(my->GetTree(), arr[i], 0);
 	}
 }
 
 /*!
-Input last array to the BT 
-
+Input last array to the BT
 \param my Is a variable of class BinaryTree
 \param arr Array of elements of class Dice
 \paran n Size of array
@@ -277,13 +271,12 @@ void ToBinaryTree(BinaryTree<SetOfDice>* my, SetOfDice arr[], int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		my->Input(my->GetTree(), i, arr[i]);
+		my->Input(my->GetTree(), arr[i]);
 	}
 }
 
 /*!
 Input last array to the N-ary tree
-
 \param my Is a variable of class N_aryTree
 \param arr Array of elements of class Dice
 \paran n Size of array
@@ -300,7 +293,6 @@ void ToN_aryTree(N_aryTree<SetOfDice>* my, SetOfDice arr[], int n)
 
 /*!
 \brief Menu
-
 MENU:
 1)Enter types
   1)Integer
@@ -413,7 +405,7 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 		}
 		case 2:
 			system("cls");
-			cout << "Menu\n1)Print binary search tree\n2)Recursive search\n3)Non-recursive search\n4)Find minimal\n5)Delete node\n";
+			cout << "Menu\n1)Print binary search tree\n2)Recursive search\n3)Non-recursive search\n4)Find minimal\n5)Delete node\n6)Input\n";
 			int choice1;
 			cin >> choice1;
 			switch (choice1)
@@ -493,6 +485,23 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 					system("cls");
 				break;
 			}
+			case 6:
+			{
+				system("cls");
+				double a;
+				cout << "Enter value to input: ";
+				cin >> a;
+				SetOfDice D;
+				D.SetAmountMS(a);
+				BST.Input(BST.GetTree(), D, 0);
+				cout << "\n0)Back\n";
+				cin >> choice;
+				if (choice == 0)
+					break;
+				else
+					system("cls");
+				break;
+			}
 			default:
 				break;
 			}
@@ -500,7 +509,7 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 		case 3:
 		{
 			system("cls");
-			cout << "Menu\n1)Print binary tree\n2)Search\n3)Delete node\n";
+			cout << "Menu\n1)Print binary tree\n2)Search\n3)Delete node\n4)Input\n";
 			int choice2;
 			cin >> choice2;
 			switch (choice2)
@@ -555,13 +564,28 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 					break;
 				else break;
 			}
+			case 4:
+			{
+				system("cls");
+				double a;
+				cout << "Input value to input: ";
+				cin >> a;
+				SetOfDice D;
+				D.SetAmountMS(a);
+				BT.Input(BT.GetTree(), D);
+				cout << "0)Back\n";
+				cin >> choice;
+				if (choice == 0)
+					break;
+				else break;
+			}
 			default:
 				break;
 			}
 		case 4:
 		{
 			system("cls");
-			cout << "Menu\n1)Print n-ary tree\n2)Search\n3)Delete node\n";
+			cout << "Menu\n1)Print n-ary tree\n2)Search\n3)Delete node\n4)Input\n";
 			int choise4;
 			cin >> choise4;
 			switch (choise4)
@@ -597,10 +621,25 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 				system("cls");
 				SetOfDice D;
 				double a;
-				cout << "Input value to delete: ";
+				cout << "Input value to input: ";
 				cin >> a;
 				D.SetAmountMS(a);
 				NT.Delete<SetOfDice>(NT.GetList(), D);
+				cout << "0)Back\n";
+				cin >> choice;
+				if (choice == 0)
+					break;
+				else break;
+			}
+			case 4:
+			{
+				system("cls");
+				SetOfDice D;
+				double a;
+				cout << "Input value to delete: ";
+				cin >> a;
+				D.SetAmountMS(a);
+				NT.AddLast(NT.GetList(), 0, D);
 				cout << "0)Back\n";
 				cin >> choice;
 				if (choice == 0)
@@ -622,8 +661,17 @@ int main()
 	int n;
 	cout << "Enter quantity of sets: ";
 	cin >> n;
-	SetOfDice*cybic=new SetOfDice[n];
-	
+	SetOfDice* cybic = new SetOfDice[n];
+	for (int i = 0; i < n; i++)
+	{
+		cout << "-----------Set " << i + 1<<"-----------" << endl;
+		cybic[i].GenerateDice();
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout<<"Maths expectation for set "<<i+1<<": "<<cybic[i].CountAmountMS()<<endl;
+	}
 	cout << endl;
 	system("pause");
 	BinarySearchTree<SetOfDice> myBST;
@@ -635,3 +683,4 @@ int main()
 	Menu(n, cybic, myBST, myBT, myNT);
 
 }
+
