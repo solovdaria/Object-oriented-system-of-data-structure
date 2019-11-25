@@ -1,12 +1,9 @@
 #pragma once
-#include "pch.h"
-#include <iostream>
+
 
 
 /*!
-\brief Class of the list
-
-
+\brief Class of the listObjOrSys
 This class is responsible for the list, it's nodes, and values in the node
 \param next Next nodes
 \param prev Previous nodes
@@ -17,8 +14,8 @@ template <typename type1>
 class NodeList
 {
 public:
-	NodeList*next;
-	NodeList*prev;
+	NodeList* next;
+	NodeList* prev;
 	type1 info;
 	int index;
 	NodeList()
@@ -26,4 +23,3 @@ public:
 		this->next = nullptr;
 	}
 };
-

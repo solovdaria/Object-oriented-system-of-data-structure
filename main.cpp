@@ -1,16 +1,26 @@
 ﻿// Object oriented system.cpp 
 //#include "pch.h"
 #include <iostream>
-#include "BinarySearchTree.h"
-#include "BinaryTree.h"
-#include "N_aryTree.h"
-#include "SetOfDice.h"
+#include "./Trees/BinarySearchTree.h"
+#include "./Trees/BinaryTree.h"
+#include "./Trees/N_aryTree.h"
+#include "./AllDice/SetOfDice.h"
 #include <list>
 #include <string>
 #include <vector>
 #include <ctime>
 using namespace std;
 
+
+bool operator>(SetOfDice tmp1, SetOfDice tmp2)
+{
+	return tmp1.GetAmountMS() > tmp2.GetAmountMS();
+}
+
+bool operator<(SetOfDice tmp1, SetOfDice tmp2)
+{
+	return tmp1.GetAmountMS() < tmp2.GetAmountMS();
+}
 /*!
 \brief Demonstration of working with string
 Shows strings in all trees, deletes node and finds node
@@ -305,19 +315,22 @@ MENU:
   3)Non-recursive search
   4)Find minimal
   5)Delete node
+  6)Input
 3)Binary tree
   1)Print binary tree
   2)Search
   3)Delete node
+  4)Input
 4)N-ary tree
   1)Print n-ary tree
   2)Search
   3)Delete node
+  4)Input
 \param n Quantity of dice
 \param arr Array of elments of class Dice
 \param BST Binary search tree
 */
-void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<SetOfDice> BT, N_aryTree<SetOfDice> NT)
+void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<SetOfDice> BT, N_aryTree<SetOfDice> NT, int k)
 {
 	do {
 		system("cls");
@@ -488,11 +501,9 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 			case 6:
 			{
 				system("cls");
-				double a;
-				cout << "Enter value to input: ";
-				cin >> a;
 				SetOfDice D;
-				D.SetAmountMS(a);
+				D.GenerateDice();
+				cout << "\nMaths expectation for set " << ": " << D.CountAmountMS() << endl;
 				BST.Input(BST.GetTree(), D, 0);
 				cout << "\n0)Back\n";
 				cin >> choice;
@@ -567,11 +578,9 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 			case 4:
 			{
 				system("cls");
-				double a;
-				cout << "Input value to input: ";
-				cin >> a;
 				SetOfDice D;
-				D.SetAmountMS(a);
+				D.GenerateDice();
+				cout << "\nMaths expectation for set " << ": " << D.CountAmountMS() << endl;
 				BT.Input(BT.GetTree(), D);
 				cout << "0)Back\n";
 				cin >> choice;
@@ -621,7 +630,7 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 				system("cls");
 				SetOfDice D;
 				double a;
-				cout << "Input value to input: ";
+				cout << "Input value to delete: ";
 				cin >> a;
 				D.SetAmountMS(a);
 				NT.Delete<SetOfDice>(NT.GetList(), D);
@@ -635,11 +644,20 @@ void Menu(int n, SetOfDice arr[], BinarySearchTree<SetOfDice> BST, BinaryTree<Se
 			{
 				system("cls");
 				SetOfDice D;
-				double a;
-				cout << "Input value to delete: ";
-				cin >> a;
-				D.SetAmountMS(a);
+				D.GenerateDice();
+				cout << "\nMaths expectation for set " << ": " << D.CountAmountMS() << endl;
 				NT.AddLast(NT.GetList(), 0, D);
+				while(NT.GetList()!=nullptr)
+				{
+					if (D.GetAmountMS() < NT.GetList()->info.GetAmountMS())
+					{
+						N_aryTree<SetOfDice> NT1;
+						NT.Sort(NT, NT1, k);
+						cout << "----------New n-ary tree----------" << endl;
+						NT1.Output<SetOfDice>();
+					}
+					NT.SetList(NT.GetList()->next);
+				}
 				cout << "0)Back\n";
 				cin >> choice;
 				if (choice == 0)
@@ -673,14 +691,29 @@ int main()
 		cout<<"Maths expectation for set "<<i+1<<": "<<cybic[i].CountAmountMS()<<endl;
 	}
 	cout << endl;
+
+	cout << "----------Amounts and their probabilities----------" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout << "Dice " << i + 1 << endl;
+		cybic[i].Amounts();
+	}
+	cout << endl;
 	system("pause");
 	BinarySearchTree<SetOfDice> myBST;
 	BinaryTree<SetOfDice> myBT;
 	N_aryTree<SetOfDice> myNT;
+	N_aryTree<SetOfDice> myNT1;
+	
 	ToBinarySearchTree(&myBST, cybic, n);
 	ToBinaryTree(&myBT, cybic, n);
-	ToN_aryTree(&myNT, cybic, n);
-	Menu(n, cybic, myBST, myBT, myNT);
+	ToN_aryTree(&myNT1, cybic, n);
+	system("cls");
+	int k;
+	cout << "Enter number of children in n-ary tree: ";
+	cin >> k;
+	myNT1.Sort(myNT1, myNT, k);
+	Menu(n, cybic, myBST, myBT, myNT, k);
 
 }
 

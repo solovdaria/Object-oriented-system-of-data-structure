@@ -1,9 +1,8 @@
 #pragma once
-#include "pch.h"
+//#include "pch.h"
 #include <iostream>
-#include "Dice/SetOfDice.h"
-#include "Dice/Dice.h"
-#include "Nodes/node.h"
+#include "../AllDice/SetOfDice.h"
+#include "../Nodes/node.h"
 #include <queue>
 #include <string>
 #include <vector>
@@ -11,7 +10,6 @@ using namespace std;
 
 /*!
 \brief Subclass of class node
-
 This subclass works with binary tree and it's functions. Such as input values,
 recursive output values, output in tree form, do recursive search,
 delete tree nodes.*/
@@ -23,12 +21,11 @@ private:
 	node<type1>* tree; ///< Tree node
 	/*!
 	\brief Finds deepest value in the tree and returns it's node
-
 	Used for the deleting value function
 	\param root Node
 	\return Node with deepest value
 	*/
-	void deletBTnode(node<type1> *root, node<type1>* del)
+	void deletBTnode(node<type1>* root, node<type1>* del)
 	{
 		queue<node<type1>*> q;
 		q.push(root);
@@ -63,7 +60,7 @@ public:
 		return tree;
 	}
 
-	void SetTree(node<type1>*tree) ///< Tree setter
+	void SetTree(node<type1>* tree) ///< Tree setter
 	{
 		this->tree = tree;
 	}
@@ -75,17 +72,15 @@ public:
 
 	/*!
 	\brief Function for the binary tree input
-
 	\param curr Node
 	\param i, a Are responsible for index and main value in the node
 	*/
 	template<typename type1>
-	void Input(node<type1>* curr, int i, type1 a)
+	void Input(node<type1>* curr, type1 a)
 	{
 		if (tree == nullptr)
 		{
 			tree = new node<type1>;
-			//			tree->index = i;
 			tree->info = a;
 			tree->left = tree->right = nullptr;
 		}
@@ -93,7 +88,6 @@ public:
 		if (curr == nullptr)
 		{
 			curr = new node<type1>;
-			//			curr->index = i;
 			curr->info = a;
 			curr->left = curr->right = nullptr;
 		}
@@ -102,27 +96,24 @@ public:
 		{
 			curr->left = new node<type1>;
 			curr->left->left = curr->left->right = nullptr;
-			//			curr->left->index = i;
 			curr->left->info = a;
 		}
 		else if (curr->right == nullptr)
 		{
 			curr->right = new node<type1>;
 			curr->right->left = curr->right->right = nullptr;
-			//			curr->right->index = i;
 			curr->right->info = a;
 		}
 		else
-			Input(curr->left, i, a);
+			Input(curr->left, a);
 	}
 
 	template<>
-	void Input<vector<int>>(node<vector<int>>* curr, int i, vector<int> a)
+	void Input<vector<int>>(node<vector<int>>* curr, vector<int> a)
 	{
 		if (tree == nullptr)
 		{
 			tree = new node<vector<int>>;
-			//			tree->index = i;
 			tree->info = a;
 			tree->left = tree->right = nullptr;
 		}
@@ -130,7 +121,6 @@ public:
 		if (curr == nullptr)
 		{
 			curr = new node<vector<int>>;
-			//		curr->index = i;
 			curr->info = a;
 			curr->left = curr->right = nullptr;
 		}
@@ -139,18 +129,16 @@ public:
 		{
 			curr->left = new node<vector<int>>;
 			curr->left->left = curr->left->right = nullptr;
-			//		curr->left->index = i;
 			curr->left->info = a;
 		}
 		else if (curr->right == nullptr)
 		{
 			curr->right = new node<vector<int>>;
 			curr->right->left = curr->right->right = nullptr;
-			//		curr->right->index = i;
 			curr->right->info = a;
 		}
 		else
-			Input(curr->left, i, a);
+			Input(curr->left, a);
 	}
 
 	/*!
@@ -173,14 +161,14 @@ public:
 			return;
 		PrintPostorder(curr->left);
 		PrintPostorder(curr->right);
-		cout << "A" << curr->info.GetNumOfDice() << ":" << curr->info.GetAmountMS() << " ";
+		cout << curr->info.GetAmountMS() << " ";
 	}
 
 	/*!
 	\brief Function for the inorder output
 	*/
 	template<typename type1>
-	void PrintInorder(node<type1>*curr)
+	void PrintInorder(node<type1>* curr)
 	{
 		if (curr == nullptr)
 			return;
@@ -190,12 +178,12 @@ public:
 	}
 
 	template<>
-	void PrintInorder<SetOfDice>(node<SetOfDice>*curr)
+	void PrintInorder<SetOfDice>(node<SetOfDice>* curr)
 	{
 		if (curr == nullptr)
 			return;
 		PrintInorder(curr->left);
-		cout << "A" << curr->info.GetNumOfDice() << ":" << curr->info.GetAmountMS() << " ";;
+		cout << curr->info.GetAmountMS() << " ";;
 		PrintInorder(curr->right);
 	}
 
@@ -203,7 +191,7 @@ public:
 	\brief Function for the preorder output
 	*/
 	template<typename type1>
-	void PrintPreorder(node<type1>*curr)
+	void PrintPreorder(node<type1>* curr)
 	{
 		if (curr == nullptr)
 			return;
@@ -217,13 +205,12 @@ public:
 	{
 		if (curr == nullptr)
 			return;
-		cout << "A" << curr->info.GetNumOfDice() << ":" << curr->info.GetAmountMS() << " ";
+		cout << curr->info.GetAmountMS() << " ";
 		PrintPreorder(curr->left);
 		PrintPreorder(curr->right);
 	}
 	/*!
 	\brief Recursive search for value
-
 	\param curr Node
 	\param v Searched value
 	\param counter Counts level of the searched value
@@ -537,7 +524,6 @@ public:
 	}
 	/*!
 	\brief Outputs tree in the tree in the tree form
-
 	Left (smaller) values are higher, right (bigger) values are lower
 	\param curr Node
 	\param level Is responsible for value level in the tree
@@ -575,7 +561,7 @@ public:
 		{
 			PrintTree(curr->right, level + 1);
 			for (int i = 0; i < level; i++) cout << "         ";
-			cout << "(A" << curr->info.GetNumOfDice() << ":" << curr->info.GetAmountMS() << ")" << endl;
+			cout << curr->info.GetAmountMS() << ")" << endl;
 			PrintTree(curr->left, level + 1);
 		}
 	}

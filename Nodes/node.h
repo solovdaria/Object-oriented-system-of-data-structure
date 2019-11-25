@@ -3,7 +3,6 @@
 
 /*!
 \brief Class of the tree
-
 This class is responsible for the tree, it's descents, and values in the node
 \param right, left Descent pointers
 \param info Template value in the node, which is responsible for the main value
@@ -22,4 +21,3 @@ public:
 	node* right;
 	node* left;
 };
-
