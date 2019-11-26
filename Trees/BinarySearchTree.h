@@ -12,7 +12,6 @@ using namespace std;
 This subclass works with binary search tree and it's functions. Such as input values,
 recursive and non-recursive output values, output in tree form, do recursive and non-recursive search,
 delete tree nodes and search minimal values.*/
-
 template <typename type1>
 class BinarySearchTree :public node<type1>
 {
@@ -20,7 +19,9 @@ private:
 	node<type1>* tree; ///< Tree node
 	/*!
 	\brief Function shows if vectors are equal
+
 	\param a, b Vectors
+	\return 1 if vectors are equal, 2 if if a > b, 3 if a < b
 	*/
 	int Equal(vector<int> a, vector<int> b)
 	{
@@ -72,6 +73,7 @@ public:
 
 	/*!
 	\brief Function for the binary search tree input
+
 	\param curr Node
 	\param i, a Are responsible for index and main value in the node
 	*/
@@ -231,6 +233,7 @@ public:
 
 	/*!
 	\brief Function for outputing tree
+
 	Recursive outputing index and main values by main values from smallest to the biggest
 	\param curr Node
 	*/
@@ -269,6 +272,7 @@ public:
 
 	/*!
 	\brief Outputs tree in the tree in the tree form
+
 	Left (smaller) values are higher, right (bigger) values are lower
 	\param curr Node
 	\param level Is responsible for value level in the tree
@@ -420,6 +424,7 @@ public:
 			}
 		}
 	}
+	
 	/*!
 	\brief Non-recursive search for the value
 	\param curr Node
@@ -506,6 +511,7 @@ public:
 	}
 	/*!
 	\brief Delets node with inputed value
+	
 	\param curr Node
 	\param v Value which must be deleted
 	\param tmp_ Variable which contains node's value multiplied for 1000, as searching doesn't works with doubles

@@ -1,9 +1,8 @@
 #pragma once
 
-
-
 /*!
 \brief Class of the listObjOrSys
+
 This class is responsible for the list, it's nodes, and values in the node
 \param next Next nodes
 \param prev Previous nodes

@@ -10,7 +10,7 @@ addition of the array of probabilities to the tree
 class Dice
 {
 	int brinksNum; ///< Quantity of brinks
-	double MS;
+	double MS; ///< Math expectation
 	double* arrProbability; ///< Array of probabilities
 public:
 	Dice();

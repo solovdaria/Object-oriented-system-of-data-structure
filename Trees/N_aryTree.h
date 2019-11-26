@@ -32,7 +32,7 @@ public:
 		return nodes;
 	}
 
-	void SetList(NodeList<type1>* nodes)
+	void SetList(NodeList<type1>* nodes) ///< List setter
 	{
 		this->nodes = nodes;
 	}
@@ -44,6 +44,7 @@ public:
 
 	/*!
 	\brief Function for the n-ary tree list add to the end of the list
+
 	\param element Node
 	\param i, a Are responsible for index and main value in the node
 	*/
@@ -68,6 +69,7 @@ public:
 
 	/*!
 	\brief Search for value
+
 	\param current Node
 	\param a Searched value
 	\return Index of the searched value in case it was in the list
@@ -110,6 +112,7 @@ public:
 
 	/*!
 	\brief Function for outputing list
+
 	Outputing index and main values
 	\param current Node
 	\param head Head of the list
@@ -151,8 +154,10 @@ public:
 		}
 		cout << endl;
 	}
+	
 	/*!
 	\brief Delets node with inputed value
+
 	\param current Node
 	\param need Value which must be deleted
 	\param head Head of the list
@@ -249,10 +254,10 @@ public:
 
 	/*!
 	\brief Sorts list in the n-ary tree form
+
 	\param a List, which we are working with
 	\param b Created list in the n-ary tree form
 	*/
-	template<typename type1>
 	void Sort(N_aryTree<type1>& a, N_aryTree<type1>& b, int n)
 	{
 		vector<type1> c, d;
@@ -295,50 +300,5 @@ public:
 			if (head)head = head->prev;
 		}
 	}
-
-
-	/*template<>
-	void Sort<SetOfDice>(N_aryTree<SetOfDice>& a, N_aryTree<SetOfDice>& b, int n)
-	{
-		vector<double> c, d;
-		NodeList<SetOfDice>* head = a.GetHead();
-		while (head != nullptr)
-		{
-			c.push_back(head->info.GetAmountMS());
-			head = head->next;
-		}
-		head = a.GetHead();
-		vector<double> c1;
-
-		sort(c.begin(), c.end());
-		if (!c.empty())
-		{
-			int p = 1;
-			while (p + n < c.size()) reverse(&c[p], &c[p + n]), p += n;
-			reverse(&c[p], (&c[c.size() - 1] + 1));
-			int N = n;
-			c1.push_back(c[0]);
-			p = 1;
-			static auto j = c1.begin();
-			while (p != c.size())
-			{
-				while ((N--) && (p != c.size())) j = c1.insert(j, c[p++]);
-				N = n;
-				if (p != c.size())
-				{
-					while (N--) j++;
-					if (++j == c1.end()) j = c1.begin();
-				}
-				N = n;
-			}
-		}
-
-		int j = 0;
-		for (auto i : c1)
-		{
-			b.AddLast(head, j++, i);
-			if (head)head = head->prev;
-		}
-	}*/
 
 };

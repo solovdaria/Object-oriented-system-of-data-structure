@@ -11,18 +11,34 @@
 #include <ctime>
 using namespace std;
 
+/*!
+\brief Overload of operator ">"
 
+Compares amounts of maths expectation in two sets
+\param tmp1 First object of class SetOfDice
+\param tmp2 Second object of class SetOfDice
+\return 0 or 1
+*/
 bool operator>(SetOfDice tmp1, SetOfDice tmp2)
 {
 	return tmp1.GetAmountMS() > tmp2.GetAmountMS();
 }
 
+/*!
+\brief Overload of operator "<"
+
+Compares amounts of maths expectation in two sets
+\param tmp1 First object of class SetOfDice
+\param tmp2 Second object of class SetOfDice
+\return 0 or 1
+*/
 bool operator<(SetOfDice tmp1, SetOfDice tmp2)
 {
 	return tmp1.GetAmountMS() < tmp2.GetAmountMS();
 }
 /*!
 \brief Demonstration of working with string
+
 Shows strings in all trees, deletes node and finds node
 \param str String
 \param n Number of string
@@ -695,7 +711,7 @@ int main()
 	cout << "----------Amounts and their probabilities----------" << endl;
 	for (int i = 0; i < n; i++)
 	{
-		cout << "Dice " << i + 1 << endl;
+		cout << endl<<"Dice " << i + 1 << endl;
 		cybic[i].Amounts();
 	}
 	cout << endl;

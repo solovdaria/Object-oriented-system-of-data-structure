@@ -3,27 +3,27 @@
 #include "Dice.h"
 #include "SetOfDice.h"
 
-SetOfDice::SetOfDice()
+SetOfDice::SetOfDice() ///<Constructor by default
 {
 	arrDice = new Dice[5];
 }
 
-
-Dice* SetOfDice::GetSetOfDice()
-{
-	return arrDice;
-}
-
-double SetOfDice::GetAmountMS()
+double SetOfDice::GetAmountMS() ///< Maths expectation getter
 {
 	return amountMS;
 }
 
-void SetOfDice::SetAmountMS(double amountMS)
+void SetOfDice::SetAmountMS(double amountMS) ///< Maths expectation setter
 {
 	this->amountMS = amountMS;
 }
 
+/*!
+\brief Dice generation
+
+Generate dice in the set
+\param mas Array of probable quantities of bricks
+*/
 void SetOfDice::GenerateDice()
 {
 	int mas[7] = { 2, 4, 6, 8, 10, 12, 20 };
@@ -41,7 +41,7 @@ void SetOfDice::GenerateDice()
 	}
 }
 
-double SetOfDice::CountAmountMS()
+double SetOfDice::CountAmountMS() ///< Counts amount of maths expectation for set
 {
 		for (int i = 0; i < 5; i++)
 		{
@@ -51,12 +51,10 @@ double SetOfDice::CountAmountMS()
 	return amountMS;
 }
 
-
-
 /*!
 \brief Amount on n dice
+
 Summarizes array sizes
-\param n Quantity of dice
 \param amount Amount
 */
 void SetOfDice::Amounts()

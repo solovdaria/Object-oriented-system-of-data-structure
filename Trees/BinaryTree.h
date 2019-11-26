@@ -10,10 +10,10 @@ using namespace std;
 
 /*!
 \brief Subclass of class node
+
 This subclass works with binary tree and it's functions. Such as input values,
 recursive output values, output in tree form, do recursive search,
 delete tree nodes.*/
-
 template <typename type1>
 class BinaryTree :public node<type1>
 {
@@ -21,6 +21,7 @@ private:
 	node<type1>* tree; ///< Tree node
 	/*!
 	\brief Finds deepest value in the tree and returns it's node
+
 	Used for the deleting value function
 	\param root Node
 	\return Node with deepest value
@@ -72,6 +73,7 @@ public:
 
 	/*!
 	\brief Function for the binary tree input
+
 	\param curr Node
 	\param i, a Are responsible for index and main value in the node
 	*/
@@ -142,7 +144,7 @@ public:
 	}
 
 	/*!
-	\brief Function for the postorder output
+	Function for the postorder output
 	*/
 	template<typename type1>
 	void PrintPostorder(node<type1>* curr)
@@ -165,7 +167,7 @@ public:
 	}
 
 	/*!
-	\brief Function for the inorder output
+	Function for the inorder output
 	*/
 	template<typename type1>
 	void PrintInorder(node<type1>* curr)
@@ -188,7 +190,7 @@ public:
 	}
 
 	/*!
-	\brief Function for the preorder output
+	Function for the preorder output
 	*/
 	template<typename type1>
 	void PrintPreorder(node<type1>* curr)
@@ -211,6 +213,7 @@ public:
 	}
 	/*!
 	\brief Recursive search for value
+
 	\param curr Node
 	\param v Searched value
 	\param counter Counts level of the searched value
@@ -297,7 +300,14 @@ public:
 
 	}
 
-	/* function to delete element in binary tree */
+	/*!
+	\brief Function to delete element in binary tree
+	
+	\param key Value to delete
+	\param root, temp Nodes
+	\param tmp_, tmp1 Mulpiplied double 
+	\key_node Node with key
+	*/
 	template<typename type1>
 	node<type1>* deletion(node<type1>* root, type1 key)
 	{
@@ -469,7 +479,6 @@ public:
 	template<>
 	node<string>* deletion(node<string>* root, string key)
 	{
-
 		if (root == nullptr)
 			return nullptr;
 
@@ -524,6 +533,7 @@ public:
 	}
 	/*!
 	\brief Outputs tree in the tree in the tree form
+
 	Left (smaller) values are higher, right (bigger) values are lower
 	\param curr Node
 	\param level Is responsible for value level in the tree

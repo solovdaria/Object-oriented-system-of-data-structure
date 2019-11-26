@@ -4,10 +4,9 @@
 
 class SetOfDice
 {
-//	const int numOfDice = 5;
-	Dice*arrDice;
-	double amountMS = 0;
-	int amount = 0;
+	Dice*arrDice; ///< Array of dice in set
+	double amountMS = 0; ///< Amount of maths expectations
+	int amount = 0; ///< Amount of brinks 
 public:
 	SetOfDice();
 	Dice* GetSetOfDice();
