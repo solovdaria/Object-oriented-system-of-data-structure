@@ -62,13 +62,6 @@ void SetOfDice::Amounts()
 	for (int i = 0; i < 5; i++)
 		amount += arrDice[i].GetBrinksNum();
 
-	/* double* arr = new double[amount-4];
-
-	for (int i = 0; i < amount-4; i++)
-	{
-		arr[i] = (arrDice[0].GetProb(0)) * (arrDice[1].GetProb(0)) * (arrDice[2].GetProb(0)) *
-			(arrDice[3].GetProb(0)) * (arrDice[4].GetProb(i+5));
-	}*/
 	for (int i = 0; i < amount-4; i++)
 		cout << i+5 <<" ";
 }

@@ -4,10 +4,11 @@
 
 class SetOfDice
 {
-	Dice*arrDice; ///< Array of dice in set
+	
 	double amountMS = 0; ///< Amount of maths expectations
 	int amount = 0; ///< Amount of brinks 
 public:
+	Dice* arrDice; ///< Array of dice in set
 	SetOfDice();
 	Dice* GetSetOfDice();
 	double GetAmountMS();
